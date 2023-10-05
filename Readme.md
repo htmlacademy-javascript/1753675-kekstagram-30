@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Анастасия Ермоленко](https://up.htmlacademy.ru/javascript/30/user/1753675).
-* Наставник: [Кенан Агаев](https://htmlacademy.ru/profile/kenakula).
+* Наставник: `Неизвестно`.
 
 ---
 
