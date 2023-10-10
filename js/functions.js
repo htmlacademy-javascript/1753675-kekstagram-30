@@ -1,29 +1,32 @@
-const getCompare = (textInput, length) => textInput.length <= length;
+const isStringLengthValid = (textInput, length) => length >= textInput.length;
 
-getCompare('проверяемая строка', 20);
-getCompare('проверяемая строка', 10);
-getCompare('проверяемая строка', 18);
+isStringLengthValid('проверяемая строка', 20);
+isStringLengthValid('проверяемая строка', 10);
+isStringLengthValid('проверяемая строка', 18);
 
-const checkPalindrome = (textInput) => {
+const isPalindrom = (textInput) => {
   const clearInput = textInput.replaceAll(' ', '').toLowerCase();
   const reversedInput = clearInput.split('').reverse().join('');
   return clearInput === reversedInput;
 };
 
-checkPalindrome('Лёша на полке клопа нашёл ');
-checkPalindrome('ДовОд');
-checkPalindrome('Кекс');
+isPalindrom('Лёша на полке клопа нашёл ');
+isPalindrom('ДовОд');
+isPalindrom('Кекс');
 
 const extractNumbers = (textInput) => {
   let numbers = '';
-  for (let i = 0; i < textInput.length; i++) {
-    if (/[0-9]/.test(textInput[i])) {
-      numbers += textInput[i];
+
+  for (const char of textInput) {
+    if (/[\d]/.test(char)) {
+      numbers += char;
     }
   }
+
   if (numbers === '') {
     return NaN;
   }
+
   return parseInt(numbers, 10);
 };
 
