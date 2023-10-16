@@ -48,4 +48,4 @@ const generatePhotoArray = (num) => {
   return PHOTO_ARRAY;
 };
 
-const PHOTOS = generatePhotoArray(OBJECTS_NUM);
+generatePhotoArray(OBJECTS_NUM);
