@@ -8,6 +8,7 @@ const COMMENTS = [
 ];
 const NAMES = ['Константин', 'Иван', 'Павел', 'Мария', 'Александра'];
 const OBJECTS_NUM = 25; // количество сгенерированных объектов
+const generatedCommentIds = [];
 
 // Получаем псевдорандомное число
 const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -15,9 +16,19 @@ const getRandomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)
 // Используем число для получения количества контента
 const getRandomContent = (array) => array[getRandomNumber(0, array.length - 1)];
 
+// Генерируем уникальный id для комментария
+const generateUniqueId = (num) => {
+  let id;
+  do {
+    id = getRandomNumber(1, num);
+  } while (generatedCommentIds.includes(id)); // Проверяем уникальность id
+  generatedCommentIds.push(id); // Добавляем id в массив сгенерированных id
+  return id;
+};
+
 // Создаём и возвращаем объект комментария с контентом
 const generateComment = () => ({
-  'id': getRandomNumber(1, 100),
+  'id': generateUniqueId(10000), 
   'avatar': `img/avatar-${getRandomNumber(1, 6)}.svg`,
   'message': getRandomContent(COMMENTS),
   'name': getRandomContent(NAMES)
