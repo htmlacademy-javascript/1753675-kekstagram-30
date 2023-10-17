@@ -30,7 +30,7 @@ const generateUniqueId = (num) => {
 
 // Создаём и возвращаем объект комментария с контентом
 const generateComment = () => ({
-  'id': generateUniqueId(10000), 
+  'id': generateUniqueId(10000),
   'avatar': `img/avatar-${getRandomNumber(1, 6)}.svg`,
   'message': getRandomContent(COMMENTS),
   'name': getRandomContent(NAMES)
@@ -56,10 +56,9 @@ const generatePhotoArray = (num) => {
     }
 
     photoArray.push(photoObject);
-    console.log(photoObject.comments);
   }
 
   return photoArray;
 };
 
-console.log(generatePhotoArray(OBJECTS_NUM));
+generatePhotoArray(OBJECTS_NUM);
