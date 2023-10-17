@@ -18,10 +18,12 @@ const getRandomContent = (array) => array[getRandomNumber(0, array.length - 1)];
 
 // Генерируем уникальный id для комментария
 const generateUniqueId = (num) => {
-  let id;
-  do {
-    id = getRandomNumber(1, num);
-  } while (generatedCommentIds.includes(id)); // Проверяем уникальность id
+  const id = getRandomNumber(1, num);
+
+  if (generatedCommentIds.includes(id)) { // Проверяем уникальность id
+    return generateUniqueId(num);
+  }
+
   generatedCommentIds.push(id); // Добавляем id в массив сгенерированных id
   return id;
 };
@@ -36,10 +38,10 @@ const generateComment = () => ({
 
 // Создаём и возвращаем массив объектов, которые предварительно наполняем данными
 const generatePhotoArray = (num) => {
-  const PHOTO_ARRAY = [];
+  const photoArray = [];
 
   for (let i = 1; i <= num; i++) {
-    const PHOTO_OBJECT = {
+    const photoObject = {
       id: i,
       url: `photos/${i}.jpg`,
       description: `Описание фотографии ${i}`,
@@ -47,16 +49,17 @@ const generatePhotoArray = (num) => {
       comments: []
     };
 
-    const COMMENTS_NUM = getRandomNumber(0, 30);
+    const commentsNum = getRandomNumber(0, 30);
 
-    for (let j = 0; j < COMMENTS_NUM; j++) {
-      PHOTO_OBJECT.comments.push(generateComment());
+    for (let j = 0; j < commentsNum; j++) {
+      photoObject.comments.push(generateComment());
     }
 
-    PHOTO_ARRAY.push(PHOTO_OBJECT);
+    photoArray.push(photoObject);
+    console.log(photoObject.comments);
   }
 
-  return PHOTO_ARRAY;
+  return photoArray;
 };
 
-generatePhotoArray(OBJECTS_NUM);
+console.log(generatePhotoArray(OBJECTS_NUM));
