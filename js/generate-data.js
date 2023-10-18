@@ -1,4 +1,3 @@
-
 import {COMMENTS, NAMES} from './db.js';
 import {getRandomNumber, getRandomContent} from './utils.js';
 
