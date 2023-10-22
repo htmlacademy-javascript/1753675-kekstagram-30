@@ -1,5 +1,5 @@
 // Получаем ссылку на контейнер, где будут отображаться миниатюры фотографий
-const pictures = document.querySelector('.pictures');
+const picturesContainer = document.querySelector('.pictures');
 // Получаем шаблон для создания миниатюр фотографий
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
@@ -21,7 +21,7 @@ const renderThumbnails = (array) => {
   });
 
   // Добавляем фрагмент с миниатюрами в контейнер
-  pictures.appendChild(thumbnailFragment);
+  picturesContainer.appendChild(thumbnailFragment);
 };
 
 export {renderThumbnails};
