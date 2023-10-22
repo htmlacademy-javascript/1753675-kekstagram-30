@@ -7,6 +7,7 @@ const thumbnailTemplate = document.querySelector('#picture').content.querySelect
 const renderThumbnails = (array) => {
   // Создаем фрагмент, в который будем временно добавлять миниатюры
   const thumbnailFragment = document.createDocumentFragment();
+
   array.forEach(({url, description, likes, comments}) => {
     // Клонируем шаблон миниатюры для каждого объекта данных
     const thumbnailElement = thumbnailTemplate.cloneNode(true);
@@ -18,6 +19,7 @@ const renderThumbnails = (array) => {
     // Добавляем миниатюру во фрагмент
     thumbnailFragment.appendChild(thumbnailElement);
   });
+
   // Добавляем фрагмент с миниатюрами в контейнер
   pictures.appendChild(thumbnailFragment);
 };
