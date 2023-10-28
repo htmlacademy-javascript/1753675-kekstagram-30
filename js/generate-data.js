@@ -1,4 +1,4 @@
-import {COMMENTS, NAMES} from './db.js';
+import {COMMENTS, NAMES, DESCRIPTIONS} from './db.js';
 import {getRandomNumber, getRandomContent} from './utils.js';
 
 const MAX_COMMENT_ID = 10000;
@@ -39,7 +39,7 @@ const generatePhotoArray = (num) => {
     const photoObject = {
       id: i,
       url: `photos/${i}.jpg`,
-      description: `Описание фотографии ${i}`,
+      description: getRandomContent(DESCRIPTIONS),
       likes: getRandomNumber(MIN_LIKES, MAX_LIKES),
       comments: []
     };
