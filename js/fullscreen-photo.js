@@ -1,15 +1,15 @@
 import {isEscapeKey} from './utils.js';
+import {renderComments} from './comments.js';
 
 // Получение ссылок на элементы
 const fullSizePhoto = document.querySelector('.big-picture');
 const fullSizePhotoImg = fullSizePhoto.querySelector('.big-picture__img img');
 const likesCount = fullSizePhoto.querySelector('.likes-count');
-const commentsShownCount = fullSizePhoto.querySelector('.social__comment-shown-count');
-const commentsTotalCount = fullSizePhoto.querySelector('.social__comment-total-count');
-const commentsList = fullSizePhoto.querySelector('.social__comments');
 const photoDescription = fullSizePhoto.querySelector('.social__caption');
 const picturesContainer = document.querySelector('.pictures');
 const fullSizePhotoCloseBtn = fullSizePhoto.querySelector('.big-picture__cancel');
+const commentsShownCount = document.querySelector('.social__comment-shown-count');
+const commentsTotalCount = document.querySelector('.social__comment-total-count');
 
 // Обрабатываем событие нажатия клавиши на документе
 const onDocumentKeydown = (evt) => {
@@ -34,24 +34,8 @@ const openFullSizePhotoModal = (data) => {
   likesCount.textContent = data.likes;
   commentsShownCount.textContent = data.comments.length;
   commentsTotalCount.textContent = data.comments.length;
-  commentsList.innerHTML = '';
-
-  // отрисовку комментариев нужно вынести в отдельный модуль
-  data.comments.forEach((comment) => {
-    const commentItem = document.createElement('li');
-    commentItem.classList.add('social__comment');
-    commentItem.innerHTML = `<img class="social__picture" src="${comment.avatar}" alt="" width="35" height="35">
-    <p class="social__text">${comment.message}</p>`;
-    commentsList.appendChild(commentItem);
-  });
-  // Скрываем счетчик комментариев и кнопку загрузки новых комментариев
-  const commentCount = fullSizePhoto.querySelector('.social__comment-count');
-  const commentsLoader = fullSizePhoto.querySelector('.comments-loader');
-  commentCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
-
+  renderComments(data.comments); // Отрисовываем комментарии передавая в качестве аргумента массив данных
   document.body.classList.add('modal-open'); // Добавляем класс для блокировки прокрутки страницы
-
   fullSizePhotoCloseBtn.addEventListener('click', closeFullSizePhotoModal);
   document.body.addEventListener('keydown', onDocumentKeydown);
 };
