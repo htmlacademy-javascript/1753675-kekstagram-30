@@ -8,7 +8,7 @@ const renderThumbnails = (array) => {
   // Создаем фрагмент, в который будем временно добавлять миниатюры
   const thumbnailFragment = document.createDocumentFragment();
 
-  array.forEach(({url, description, likes, comments}) => {
+  array.forEach(({url, description, likes, comments}, index) => {
     // Клонируем шаблон миниатюры для каждого объекта данных
     const thumbnailElement = thumbnailTemplate.cloneNode(true);
     // Устанавливаем значения на основании полученных данных
@@ -16,6 +16,7 @@ const renderThumbnails = (array) => {
     thumbnailElement.querySelector('.picture__img').alt = description;
     thumbnailElement.querySelector('.picture__likes').textContent = likes;
     thumbnailElement.querySelector('.picture__comments').textContent = comments.length;
+    thumbnailElement.setAttribute('data-index', index);
     // Добавляем миниатюру во фрагмент
     thumbnailFragment.appendChild(thumbnailElement);
   });
