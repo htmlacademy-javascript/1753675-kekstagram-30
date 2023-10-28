@@ -11,19 +11,19 @@ const fullSizePhotoCloseBtn = fullSizePhoto.querySelector('.big-picture__cancel'
 const commentsShownCount = document.querySelector('.social__comment-shown-count');
 const commentsTotalCount = document.querySelector('.social__comment-total-count');
 
+// Закрываем полноразмерное фото
+const closeFullSizePhotoModal = () => {
+  fullSizePhoto.classList.add('hidden');
+  document.body.classList.remove('modal-open'); // Удаляем класс для блокировки прокрутки страницы
+};
+
 // Обрабатываем событие нажатия клавиши на документе
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) { // Проверяем является ли нажатая клавиша Escape
     evt.preventDefault();
     closeFullSizePhotoModal();
+    document.body.removeEventListener('keydown', onDocumentKeydown);
   }
-};
-
-// Закрываем полноразмерное фото
-const closeFullSizePhotoModal = () => {
-  fullSizePhoto.classList.add('hidden');
-  document.body.classList.remove('modal-open'); // Удаляем класс для блокировки прокрутки страницы
-  document.body.removeEventListener('keydown', onDocumentKeydown);
 };
 
 // Открываем полноразмерное фото, передавая объект с данными изображения
