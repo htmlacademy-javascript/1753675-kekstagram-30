@@ -27,14 +27,14 @@ const onDocumentKeydown = (evt) => {
 };
 
 // Открываем полноразмерное фото, передавая объект с данными изображения
-const openFullSizePhotoModal = (data) => {
+const openFullSizePhotoModal = ({url, description, likes, comments}) => {
+  fullSizePhotoImg.src = url;
+  photoDescription.textContent = description;
+  likesCount.textContent = likes;
+  commentsShownCount.textContent = comments.length;
+  commentsTotalCount.textContent = comments.length;
+  renderComments(comments); // Отрисовываем комментарии передавая в качестве аргумента массив данных
   fullSizePhoto.classList.remove('hidden');
-  fullSizePhotoImg.src = data.url;
-  photoDescription.textContent = data.description;
-  likesCount.textContent = data.likes;
-  commentsShownCount.textContent = data.comments.length;
-  commentsTotalCount.textContent = data.comments.length;
-  renderComments(data.comments); // Отрисовываем комментарии передавая в качестве аргумента массив данных
   document.body.classList.add('modal-open'); // Добавляем класс для блокировки прокрутки страницы
   fullSizePhotoCloseBtn.addEventListener('click', closeFullSizePhotoModal);
   document.body.addEventListener('keydown', onDocumentKeydown);
@@ -46,7 +46,7 @@ const onThumbnailClick = (data) => {
     const thumbnailLink = evt.target.closest('a.picture'); // Ищем ближайший родительский элемент по селектору
     if (thumbnailLink) {
       evt.preventDefault();
-      const thumbnailIndex = data[thumbnailLink.dataset.index]; // Получаем индекс миниатюры из атрибута data-index
+      const thumbnailIndex = data[thumbnailLink.dataset.index]; // Получаем объект по атрибуту data-index
       if (thumbnailIndex) {
         openFullSizePhotoModal(thumbnailIndex);
       }
