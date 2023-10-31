@@ -10,11 +10,14 @@ const picturesContainer = document.querySelector('.pictures');
 const fullSizePhotoCloseBtn = fullSizePhoto.querySelector('.big-picture__cancel');
 const commentsShownCount = document.querySelector('.social__comment-shown-count');
 const commentsTotalCount = document.querySelector('.social__comment-total-count');
+let isFullSizePhotoOpen = false;
 
 // Закрываем полноразмерное фото
 const closeFullSizePhotoModal = () => {
   fullSizePhoto.classList.add('hidden');
   document.body.classList.remove('modal-open'); // Удаляем класс для блокировки прокрутки страницы
+  removeKeydownHandler();
+  isFullSizePhotoOpen = false;
 };
 
 // Обрабатываем событие нажатия клавиши на документе
@@ -22,12 +25,16 @@ const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) { // Проверяем является ли нажатая клавиша Escape
     evt.preventDefault();
     closeFullSizePhotoModal();
-    document.body.removeEventListener('keydown', onDocumentKeydown);
+    removeKeydownHandler();
   }
 };
 
 // Открываем полноразмерное фото, передавая объект с данными изображения
 const openFullSizePhotoModal = ({url, description, likes, comments}) => {
+  if (isFullSizePhotoOpen) {
+    removeKeydownHandler();
+  }
+
   fullSizePhotoImg.src = url;
   photoDescription.textContent = description;
   likesCount.textContent = likes;
@@ -38,6 +45,7 @@ const openFullSizePhotoModal = ({url, description, likes, comments}) => {
   document.body.classList.add('modal-open'); // Добавляем класс для блокировки прокрутки страницы
   fullSizePhotoCloseBtn.addEventListener('click', closeFullSizePhotoModal);
   document.body.addEventListener('keydown', onDocumentKeydown);
+  isFullSizePhotoOpen = true;
 };
 
 // Обрабатываем событие клика на миниатюрах
@@ -53,5 +61,9 @@ const onThumbnailClick = (data) => {
     }
   });
 };
+
+function removeKeydownHandler () {
+  document.body.removeEventListener('keydown', onDocumentKeydown);
+}
 
 export {onThumbnailClick};
