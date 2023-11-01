@@ -10,7 +10,7 @@ const picturesContainer = document.querySelector('.pictures');
 const fullSizePhotoCloseBtn = fullSizePhoto.querySelector('.big-picture__cancel');
 const commentsShownCount = document.querySelector('.social__comment-shown-count');
 const commentsTotalCount = document.querySelector('.social__comment-total-count');
-let isFullSizePhotoOpen = false;
+let isFullSizePhotoOpen = false; // Флаг для проверки открыто ли модальное окно
 
 // Закрываем полноразмерное фото
 const closeFullSizePhotoModal = () => {
@@ -52,9 +52,11 @@ const openFullSizePhotoModal = ({url, description, likes, comments}) => {
 const onThumbnailClick = (data) => {
   picturesContainer.addEventListener('click', (evt) => {
     const thumbnailLink = evt.target.closest('a.picture'); // Ищем ближайший родительский элемент по селектору
+
     if (thumbnailLink) {
       evt.preventDefault();
       const thumbnailIndex = data[thumbnailLink.dataset.index]; // Получаем объект по атрибуту data-index
+
       if (thumbnailIndex) {
         openFullSizePhotoModal(thumbnailIndex);
       }
@@ -62,6 +64,7 @@ const onThumbnailClick = (data) => {
   });
 };
 
+// Удаляем обработчик нажатия клавиши с document
 function removeKeydownHandler () {
   document.body.removeEventListener('keydown', onDocumentKeydown);
 }
