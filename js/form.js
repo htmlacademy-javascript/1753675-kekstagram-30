@@ -8,6 +8,9 @@ const uploadImagePreview = document.querySelector('.img-upload__preview > img');
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
+const effectLevelField = document.querySelector('.effect-level__value');
+  const effectSlider = document.querySelector('.effect-level__slider');
+  const effectSliderContainer = document.querySelector('.img-upload__effect-level');
 
 const handleImageUpload = () => {
   const reader = new FileReader();
@@ -59,6 +62,36 @@ const changeScaleImage = () => {
 
   scaleControlSmaller.addEventListener('click', scaleDown);
   scaleControlBigger.addEventListener('click', scaleUp);
+};
+
+const applyImageEffect = () => {
+  let currentEffect = 'original';
+  let currentIntensity = 100;
+
+  const updateImageStyle = () => {
+    let filterStyle = '';
+    switch (currentEffect) {
+      case 'chrome':
+        filterStyle = `grayscale(${(currentIntensity / 100).toFixed(1)})`;
+        break;
+      case 'sepia':
+        filterStyle = `sepia(${(currentIntensity / 100).toFixed(1)})`;
+        break;
+      case 'marvin':
+        filterStyle = `invert(${currentIntensity}%)`;
+        break;
+      case 'phobos':
+        filterStyle = `blur(${(currentIntensity / 10).toFixed(1)}px})`;
+        break;
+      case 'heat':
+        filterStyle = `brightness(${(currentIntensity / 100).toFixed(1)})`;
+        break;
+      default:
+        break;
+    }
+
+    uploadImagePreview.style.filter = filterStyle;
+  };
 };
 
 export {setupUploadImageForm, changeScaleImage};
