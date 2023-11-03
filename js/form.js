@@ -92,6 +92,29 @@ const applyImageEffect = () => {
 
     uploadImagePreview.style.filter = filterStyle;
   };
+
+  const resetEffect = () => {
+    currentEffect = 'original';
+    currentIntensity = 100;
+    effectLevelField.value = currentIntensity;
+    uploadImagePreview.style.filter = '';
+    effectSliderContainer.classList.add('hidden');
+  };
+
+  const updateImageEffect = (effect) => {
+    currentEffect = effect;
+    currentIntensity = 100;
+    effectLevelField.value = currentIntensity;
+    uploadImagePreview.style.filter = '';
+
+    if (effect === 'original') {
+      effectSliderContainer.classList.add('hidden');
+    } else {
+      effectSliderContainer.classList.remove('hidden');
+    }
+
+    updateImageStyle();
+  };
 };
 
 export {setupUploadImageForm, changeScaleImage};
