@@ -35,5 +35,6 @@ const DESCRIPTIONS = [
   'Будь своим уникальным прекрасным.',
   'Живи в настоящем моменте.'
 ];
+const HASHTAG_REGEX = /^#[а-яёa-z0-9]{1,19}$/i;
 
-export {COMMENTS, NAMES, DESCRIPTIONS};
+export {COMMENTS, NAMES, DESCRIPTIONS, HASHTAG_REGEX};
