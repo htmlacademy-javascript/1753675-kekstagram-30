@@ -43,7 +43,6 @@ const validateHashtags = (value) => {
       if (!invalidData.hashtags.includes(errorMessage.hasDuplicates)) {
         invalidData.hashtags.push(errorMessage.hasDuplicates);
       }
-      console.log(invalidData.hashtags);
       continue;
     }
 
