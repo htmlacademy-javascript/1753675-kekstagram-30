@@ -24,26 +24,30 @@ const getErrorsText = (value) => () => invalidData[value].map((element) => `<p>$
 
 const validateHashtags = (value) => {
   const hashtags = value.toLowerCase().trim().split(' ').filter(Boolean);
-  const usedTags = {};
-  const invalidHashtags = hashtags.some((element) => !HASHTAG_REGEX.test(element));
+  const usedTags = new Set();
 
   invalidData.hashtags = [];
 
   if (hashtags.length > MAX_HASHTAGS) {
     invalidData.hashtags.push(errorMessage.maxHashtags);
-    console.log(invalidData.hashtags);
   }
 
-  if (invalidHashtags) {
+  const invalidHashtags = hashtags.filter((element) => !HASHTAG_REGEX.test(element));
+
+  if (invalidHashtags.length) {
     invalidData.hashtags.push(errorMessage.invalidHashtag);
-    console.log(invalidData.hashtags);
   }
 
   for (const hashtag of hashtags) {
-    if (usedTags[hashtag]) {
-      invalidData.hashtags.push(errorMessage.hasDuplicates);
+    if (usedTags.has(hashtag)) {
+      if (!invalidData.hashtags.includes(errorMessage.hasDuplicates)) {
+        invalidData.hashtags.push(errorMessage.hasDuplicates);
+      }
       console.log(invalidData.hashtags);
+      continue;
     }
+
+    usedTags.add(hashtag);
   }
 
   return invalidData.hashtags.length === 0;
@@ -54,7 +58,6 @@ const validateComments = (value) => {
 
   if (value.length > MAX_COMMENT_LENGTH) {
     invalidData.comments.push(errorMessage.maxLength);
-    console.log(invalidData.comments);
   }
 
   return invalidData.comments.length === 0;
@@ -71,7 +74,7 @@ const configureUploadForm = () => {
 
   pristine = new Pristine(uploadImageForm, pristineConfig);
 
-  pristine.addValidator(hashtagsInput, validateHashtags, getErrorsText('hashtags'));
+  pristine.addValidator(hashtagsInput, validateHashtags, getErrorsText('hashtags'), true);
   pristine.addValidator(commentInput, validateComments, getErrorsText('comments'));
 };
 
