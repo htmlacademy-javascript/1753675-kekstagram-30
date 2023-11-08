@@ -20,6 +20,7 @@ const closeFullSizePhotoModal = () => {
   isFullSizePhotoOpen = false;
 };
 
+
 // Обрабатываем событие нажатия клавиши на документе
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) { // Проверяем является ли нажатая клавиша Escape
@@ -36,6 +37,7 @@ const openFullSizePhotoModal = ({url, description, likes, comments}) => {
   }
 
   fullSizePhotoImg.src = url;
+  fullSizePhotoImg.alt = description;
   photoDescription.textContent = description;
   likesCount.textContent = likes;
   commentsShownCount.textContent = comments.length;

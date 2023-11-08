@@ -2,18 +2,15 @@ import {HASHTAG_REGEX} from './db.js';
 
 const MAX_HASHTAGS = 5; // Максимальное количество хэштегов
 const MAX_COMMENT_LENGTH = 140; // Максимальная длина комментария
-const uploadImageForm = document.querySelector('.img-upload__form');
-const hashtagsInput = uploadImageForm.querySelector('.text__hashtags');
-const commentInput = uploadImageForm.querySelector('.text__description');
 
 let pristine;
 
 // Сообщения об ошибках, которые будем отображать
 const errorMessage = {
-  maxHashtags: 'Хэштегов не должно быть более 5',
+  maxHashtags: `Хэштегов не должно быть более ${MAX_HASHTAGS}`,
   hasDuplicates: 'Хэштеги не должны повторяться',
   invalidHashtag: 'Хэштег невалиден',
-  maxLength: 'Длина комментария не должна превышать 140 символов'
+  maxLength: `Длина комментария не должна превышать ${MAX_COMMENT_LENGTH} символов`
 };
 
 // Сохраняем в этот объект невалидные данные
@@ -23,7 +20,7 @@ const invalidData = {
 };
 
 // Получаем текст ошибок для вывода в форме
-const getErrorsText = (value) => () => invalidData[value].map((element) => `<p>${element}</p>`).join('\n');
+const getErrorsText = (value) => () => invalidData[value].map((element) => `<p>${element}</p>`).join(' ');
 
 // Валидируем хэштеги
 const validateHashtags = (value) => {
@@ -46,11 +43,10 @@ const validateHashtags = (value) => {
 
   // Проверяем наличие повторяющихся хэштегов
   for (const hashtag of hashtags) {
-    if (usedTags.has(hashtag)) {
-      if (!invalidData.hashtags.includes(errorMessage.hasDuplicates)) {
-        invalidData.hashtags.push(errorMessage.hasDuplicates);
-      }
+    const isDuplicateError = invalidData.hashtags.includes(errorMessage.hasDuplicates);
 
+    if (usedTags.has(hashtag) && !isDuplicateError) {
+      invalidData.hashtags.push(errorMessage.hasDuplicates);
       continue;
     }
 
@@ -75,7 +71,7 @@ const validateComments = (value) => {
 };
 
 // Конфигурируем форму для валидации
-const configureUploadForm = () => {
+const configureUploadForm = (uploadForm, hashtagsInput, commentInput) => {
   const pristineConfig = {
     classTo: 'img-upload__field-wrapper',
     errorClass: 'img-upload__field-wrapper--error',
@@ -85,7 +81,7 @@ const configureUploadForm = () => {
   };
 
   // Создаем экземпляр Pristine и добавляем валидаторы
-  pristine = new Pristine(uploadImageForm, pristineConfig);
+  pristine = new Pristine(uploadForm, pristineConfig);
   pristine.addValidator(hashtagsInput, validateHashtags, getErrorsText('hashtags'), true);
   pristine.addValidator(commentInput, validateComments, getErrorsText('comments'));
 };
@@ -93,7 +89,7 @@ const configureUploadForm = () => {
 // Проверяем валидность формы
 const isValidForm = () => pristine.validate();
 // Сбрасываем валидацию
-const resetValidate = () => pristine.destroy();
+const resetValidate = () => pristine.reset();
 
 
 export {configureUploadForm, isValidForm, resetValidate};

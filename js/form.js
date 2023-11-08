@@ -32,11 +32,6 @@ const closeImageEditor = () => {
   uploadImageForm.reset();
   overlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
-
-  // Проверяем валидность формы перед закрытием
-  if (isValidForm()) {
-    closeImageEditor();
-  }
 };
 
 // Настраиваем форму редактирования изображения
@@ -48,6 +43,7 @@ const setupUploadImageForm = () => {
 
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
+      evt.preventDefault();
       // Проверяем, не находится ли фокус на поле ввода комментария или хэштега
       const isCommentInputFocused = document.activeElement === commentInput;
       const isHashtagsInputFocused = document.activeElement === hashtagsInput;
@@ -60,7 +56,7 @@ const setupUploadImageForm = () => {
   });
 
   // Вызываем функцию для конфигурации формы валидации
-  configureUploadForm();
+  configureUploadForm(uploadImageForm, hashtagsInput, commentInput);
 
   // Слушаем событие отправки формы
   uploadImageForm.addEventListener('submit', (evt) => {
