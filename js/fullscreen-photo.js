@@ -71,4 +71,4 @@ function removeKeydownHandler () {
   document.body.removeEventListener('keydown', onDocumentKeydown);
 }
 
-export {onThumbnailClick};
+export {onThumbnailClick, removeKeydownHandler};
