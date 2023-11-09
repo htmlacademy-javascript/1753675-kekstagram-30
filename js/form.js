@@ -8,6 +8,9 @@ const cancelButton = uploadImageForm.querySelector('.img-upload__cancel');
 const uploadImagePreview = uploadImageForm.querySelector('.img-upload__preview > img');
 const hashtagsInput = uploadImageForm.querySelector('.text__hashtags');
 const commentInput = uploadImageForm.querySelector('.text__description');
+const scaleControlValue = uploadImageForm.querySelector('.scale__control--value');
+const scaleControlSmaller = uploadImageForm.querySelector('.scale__control--smaller');
+const scaleControlBigger = uploadImageForm.querySelector('.scale__control--bigger');
 
 // Обрабатываем загрузку изображения
 const handleImageUpload = () => {
@@ -61,6 +64,40 @@ const handleSubmitForm = (evt) => {
   }
 };
 
+// Управляем масштабом загруженного изображения
+const changeScaleImage = () => {
+  // Инициализируем начальное значение масштаба
+  let scaleValue = 100;
+
+  const updateScaleStyle = () => {
+    // Обновляем стили и применяем масштаб к изображению
+    scaleControlValue.value = `${scaleValue}%`;
+    uploadImagePreview.style.transform = `scale(${scaleValue / 100})`;
+    // Передаём значение масштаба в форму
+    scaleControlValue.value = `${scaleValue}%`;
+  };
+
+  // Уменьшаем масштаб
+  const scaleDown = () => {
+    if (scaleValue > 25) {
+      scaleValue -= 25;
+      updateScaleStyle();
+    }
+  };
+
+  // Увеличиваем масштаб
+  const scaleUp = () => {
+    if (scaleValue < 100) {
+      scaleValue += 25;
+      updateScaleStyle();
+    }
+  };
+
+  // Навешиваем обработчики клика на кнопки
+  scaleControlSmaller.addEventListener('click', scaleDown);
+  scaleControlBigger.addEventListener('click', scaleUp);
+};
+
 // Настраиваем форму редактирования изображения
 const setupUploadImageForm = () => {
   // Слушаем событие изменения значения инпута загрузки изображения
@@ -72,6 +109,8 @@ const setupUploadImageForm = () => {
   configureUploadForm(uploadImageForm, hashtagsInput, commentInput);
   // Слушаем событие отправки формы
   uploadImageForm.addEventListener('submit', handleSubmitForm);
+  // Включаем управление масштабом изображения
+  changeScaleImage();
 };
 
 export {setupUploadImageForm};

@@ -76,8 +76,7 @@ const configureUploadForm = (uploadForm, hashtagsInput, commentInput) => {
     classTo: 'img-upload__field-wrapper',
     errorClass: 'img-upload__field-wrapper--error',
     errorTextParent: 'img-upload__field-wrapper',
-    errorTextTag: 'p',
-    errorTextClass: 'form__error'
+    errorTextTag: 'p'
   };
 
   // Создаем экземпляр Pristine и добавляем валидаторы
