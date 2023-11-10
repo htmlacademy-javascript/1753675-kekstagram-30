@@ -4,7 +4,7 @@ const effectSliderContainer = document.querySelector('.effect-level');
 const effectSlider = effectSliderContainer.querySelector('.effect-level__slider');
 const effectLevelField = effectSliderContainer.querySelector('.effect-level__value');
 // Конфиг эффектов фильтра
-const effectConfig = {
+const EffectConfig = {
   chrome: {
     style: 'grayscale',
     unit: '',
@@ -85,7 +85,7 @@ const onEffectClick = (evt) => {
   }
 
   effectSliderContainer.classList.remove('hidden');
-  const { style, unit, sliderOptions } = effectConfig[evt.target.value];
+  const { style, unit, sliderOptions } = EffectConfig[evt.target.value];
 
   if (activeSlider) {
     // Если слайдер уже существует, обновляем его параметры
