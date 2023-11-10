@@ -82,7 +82,7 @@ const onEffectClick = (evt) => {
   const { style, unit, sliderOptions } = effectConfig[evt.target.value];
 
   if (activeSlider) {
-     // Если слайдер уже существует, обновляем его параметры
+    // Если слайдер уже существует, обновляем его параметры
     activeSlider.updateOptions({
       range: {
         min: sliderOptions.min,
