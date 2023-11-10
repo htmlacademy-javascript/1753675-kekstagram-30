@@ -1,5 +1,6 @@
 import {isEscapeKey} from './utils.js';
 import {configureUploadForm, isValidForm, resetValidate} from './validation.js';
+import {initializeEffectSlider, resetEffect} from './effects.js';
 
 const uploadImageForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadImageForm.querySelector('.img-upload__input');
@@ -8,6 +9,9 @@ const cancelButton = uploadImageForm.querySelector('.img-upload__cancel');
 const uploadImagePreview = uploadImageForm.querySelector('.img-upload__preview > img');
 const hashtagsInput = uploadImageForm.querySelector('.text__hashtags');
 const commentInput = uploadImageForm.querySelector('.text__description');
+const scaleControlValue = uploadImageForm.querySelector('.scale__control--value');
+const scaleControlSmaller = uploadImageForm.querySelector('.scale__control--smaller');
+const scaleControlBigger = uploadImageForm.querySelector('.scale__control--bigger');
 
 // Обрабатываем загрузку изображения
 const handleImageUpload = () => {
@@ -30,6 +34,7 @@ const handleImageUpload = () => {
 const closeImageEditor = () => {
   // Сбрасываем значения и состояние формы редактирования
   uploadImageForm.reset();
+  resetEffect();
   overlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
 };
@@ -58,7 +63,46 @@ const handleSubmitForm = (evt) => {
     uploadImageForm.submit();
     // Сбрасываем валидацию формы
     resetValidate();
+    resetEffect();
   }
+};
+
+// Управляем масштабом загруженного изображения
+const changeScaleImage = () => {
+  const ScaleOptions = {
+    currentScale: 100,
+    minScale: 25,
+    maxScale: 100,
+    step: 25
+  };
+  // Инициализируем начальное значение масштаба
+  let scaleValue = ScaleOptions.currentScale;
+
+  const updateScaleStyle = () => {
+    // Обновляем стили и применяем масштаб к изображению
+    scaleControlValue.value = `${scaleValue}%`;
+    uploadImagePreview.style.transform = `scale(${scaleValue / ScaleOptions.maxScale})`;
+  };
+
+  // Уменьшаем масштаб
+  const scaleDown = () => {
+    if (scaleValue > ScaleOptions.minScale) {
+      scaleValue -= ScaleOptions.step;
+      updateScaleStyle();
+    }
+  };
+
+  // Увеличиваем масштаб
+  const scaleUp = () => {
+    if (scaleValue < ScaleOptions.maxScale) {
+      scaleValue += ScaleOptions.step;
+      updateScaleStyle();
+    }
+  };
+
+  // Навешиваем обработчики клика на кнопки
+  scaleControlSmaller.addEventListener('click', scaleDown);
+  scaleControlBigger.addEventListener('click', scaleUp);
 };
 
 // Настраиваем форму редактирования изображения
@@ -72,6 +116,9 @@ const setupUploadImageForm = () => {
   configureUploadForm(uploadImageForm, hashtagsInput, commentInput);
   // Слушаем событие отправки формы
   uploadImageForm.addEventListener('submit', handleSubmitForm);
+  // Включаем управление масштабом изображения
+  changeScaleImage();
+  initializeEffectSlider();
 };
 
 export {setupUploadImageForm};
