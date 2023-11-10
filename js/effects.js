@@ -110,7 +110,10 @@ const onEffectClick = (evt) => {
 const initializeEffectSlider = () => {
   effectSliderContainer.classList.add('hidden');
   effectsList.addEventListener('change', onEffectClick);
-  activeSlider = noUiSlider.create(effectSlider, initialSliderOptions);
+
+  if (!activeSlider) {
+    activeSlider = noUiSlider.create(effectSlider, initialSliderOptions);
+  }
 };
 
 export {initializeEffectSlider, resetEffect};

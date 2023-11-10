@@ -69,29 +69,33 @@ const handleSubmitForm = (evt) => {
 
 // Управляем масштабом загруженного изображения
 const changeScaleImage = () => {
+  const ScaleOptions = {
+    currentScale: 100,
+    minScale: 25,
+    maxScale: 100,
+    step: 25
+  };
   // Инициализируем начальное значение масштаба
-  let scaleValue = 100;
+  let scaleValue = ScaleOptions.currentScale;
 
   const updateScaleStyle = () => {
     // Обновляем стили и применяем масштаб к изображению
     scaleControlValue.value = `${scaleValue}%`;
-    uploadImagePreview.style.transform = `scale(${scaleValue / 100})`;
-    // Передаём значение масштаба в форму
-    scaleControlValue.value = `${scaleValue}%`;
+    uploadImagePreview.style.transform = `scale(${scaleValue / ScaleOptions.maxScale})`;
   };
 
   // Уменьшаем масштаб
   const scaleDown = () => {
-    if (scaleValue > 25) {
-      scaleValue -= 25;
+    if (scaleValue > ScaleOptions.minScale) {
+      scaleValue -= ScaleOptions.step;
       updateScaleStyle();
     }
   };
 
   // Увеличиваем масштаб
   const scaleUp = () => {
-    if (scaleValue < 100) {
-      scaleValue += 25;
+    if (scaleValue < ScaleOptions.maxScale) {
+      scaleValue += ScaleOptions.step;
       updateScaleStyle();
     }
   };

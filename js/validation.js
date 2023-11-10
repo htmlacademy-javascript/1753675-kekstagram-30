@@ -6,7 +6,7 @@ const MAX_COMMENT_LENGTH = 140; // Максимальная длина комм�
 let pristine;
 
 // Сообщения об ошибках, которые будем отображать
-const errorMessage = {
+const ErrorMessage = {
   maxHashtags: `Хэштегов не должно быть более ${MAX_HASHTAGS}`,
   hasDuplicates: 'Хэштеги не должны повторяться',
   invalidHashtag: 'Хэштег невалиден',
@@ -31,22 +31,22 @@ const validateHashtags = (value) => {
 
   // Проверяем количество хэштегов
   if (hashtags.length > MAX_HASHTAGS) {
-    invalidData.hashtags.push(errorMessage.maxHashtags);
+    invalidData.hashtags.push(ErrorMessage.maxHashtags);
   }
 
   // Проверяем валидность каждого хэштега
   const invalidHashtags = hashtags.filter((element) => !HASHTAG_REGEX.test(element));
 
   if (invalidHashtags.length) {
-    invalidData.hashtags.push(errorMessage.invalidHashtag);
+    invalidData.hashtags.push(ErrorMessage.invalidHashtag);
   }
 
   // Проверяем наличие повторяющихся хэштегов
   for (const hashtag of hashtags) {
-    const isDuplicateError = invalidData.hashtags.includes(errorMessage.hasDuplicates);
+    const isDuplicateError = invalidData.hashtags.includes(ErrorMessage.hasDuplicates);
 
     if (usedTags.has(hashtag) && !isDuplicateError) {
-      invalidData.hashtags.push(errorMessage.hasDuplicates);
+      invalidData.hashtags.push(ErrorMessage.hasDuplicates);
       continue;
     }
 
@@ -63,7 +63,7 @@ const validateComments = (value) => {
 
   // Проверяем длину комментария
   if (value.length > MAX_COMMENT_LENGTH) {
-    invalidData.comments.push(errorMessage.maxLength);
+    invalidData.comments.push(ErrorMessage.maxLength);
   }
 
   // Возвращаем true, если комментарий валиден
