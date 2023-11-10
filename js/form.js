@@ -1,5 +1,6 @@
 import {isEscapeKey} from './utils.js';
 import {configureUploadForm, isValidForm, resetValidate} from './validation.js';
+import {initializeEffectSlider, resetEffect} from './effects.js';
 
 const uploadImageForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadImageForm.querySelector('.img-upload__input');
@@ -33,6 +34,7 @@ const handleImageUpload = () => {
 const closeImageEditor = () => {
   // Сбрасываем значения и состояние формы редактирования
   uploadImageForm.reset();
+  resetEffect();
   overlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
 };
@@ -61,6 +63,7 @@ const handleSubmitForm = (evt) => {
     uploadImageForm.submit();
     // Сбрасываем валидацию формы
     resetValidate();
+    resetEffect();
   }
 };
 
@@ -111,6 +114,7 @@ const setupUploadImageForm = () => {
   uploadImageForm.addEventListener('submit', handleSubmitForm);
   // Включаем управление масштабом изображения
   changeScaleImage();
+  initializeEffectSlider();
 };
 
 export {setupUploadImageForm};
