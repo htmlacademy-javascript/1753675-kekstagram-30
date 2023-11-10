@@ -3,6 +3,7 @@ const effectLevelField = document.querySelector('.effect-level__value');
 const uploadImagePreview = document.querySelector('.img-upload__preview > img');
 const effectSlider = document.querySelector('.effect-level__slider');
 const effectSliderContainer = document.querySelector('.img-upload__effect-level');
+// Конфиг эффектов фильтра
 const effectConfig = {
   chrome: {
     style: 'grayscale',
@@ -55,12 +56,22 @@ const effectConfig = {
   },
 };
 
+// Переменная для хранения активного слайдера
+let activeSlider = null;
+
+// Сбрасываем эффекты
 const resetEffect = () => {
   effectLevelField.value = 0;
   uploadImagePreview.style.filter = '';
   effectSliderContainer.classList.add('hidden');
+
+  if (activeSlider) {
+    activeSlider.destroy();
+    activeSlider = null;
+  }
 };
 
+// Обрабатываем клик по эффекту фильтра
 const onEffectClick = (evt) => {
   if (evt.target.value === 'none') {
     resetEffect();
@@ -68,25 +79,39 @@ const onEffectClick = (evt) => {
   }
 
   effectSliderContainer.classList.remove('hidden');
-
   const { style, unit, sliderOptions } = effectConfig[evt.target.value];
 
-  noUiSlider.create(effectSlider, {
-    range: {
-      min: sliderOptions.min,
-      max: sliderOptions.max
-    },
-    start: sliderOptions.max,
-    step: sliderOptions.step,
-    connect: 'lower'
-  });
+  if (activeSlider) {
+     // Если слайдер уже существует, обновляем его параметры
+    activeSlider.updateOptions({
+      range: {
+        min: sliderOptions.min,
+        max: sliderOptions.max
+      },
+      start: sliderOptions.max,
+      step: sliderOptions.step
+    });
+  } else {
+    // Если слайдер не существует, создаем новый
+    activeSlider = noUiSlider.create(effectSlider, {
+      range: {
+        min: sliderOptions.min,
+        max: sliderOptions.max
+      },
+      start: sliderOptions.max,
+      step: sliderOptions.step,
+      connect: 'lower'
+    });
+  }
 
-  effectSlider.noUiSlider.on('update', () => {
-    uploadImagePreview.style.filter = `${style}(${effectSlider.noUiSlider.get()}${unit})`;
-    effectLevelField.value = effectSlider.noUiSlider.get();
+  // Обновляем эффекты фильтра при изменении слайдера
+  activeSlider.on('update', () => {
+    uploadImagePreview.style.filter = `${style}(${activeSlider.get()}${unit})`;
+    effectLevelField.value = activeSlider.get();
   });
 };
 
+// Инициализируем слайдер эффектов фильтра
 const initializeEffectSlider = () => {
   effectSliderContainer.classList.add('hidden');
   effectsList.addEventListener('change', onEffectClick);
