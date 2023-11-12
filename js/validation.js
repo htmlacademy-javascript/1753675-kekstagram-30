@@ -1,5 +1,4 @@
-import {HASHTAG_REGEX} from './db.js';
-
+const HASHTAG_REGEX = /^#[а-яёa-z0-9]{1,19}$/i;
 const MAX_HASHTAGS = 5; // Максимальное количество хэштегов
 const MAX_COMMENT_LENGTH = 140; // Максимальная длина комментария
 
@@ -91,4 +90,4 @@ const isValidForm = () => pristine.validate();
 const resetValidate = () => pristine.reset();
 
 
-export {configureUploadForm, isValidForm, resetValidate};
+export { configureUploadForm, isValidForm, resetValidate };

@@ -8,7 +8,7 @@ const renderThumbnails = (array) => {
   // Создаем фрагмент, в который будем временно добавлять миниатюры
   const thumbnailFragment = document.createDocumentFragment();
 
-  array.forEach(({url, description, likes, comments}, index) => {
+  array.forEach(({ url, description, likes, comments }, index) => {
     // Клонируем шаблон миниатюры для каждого объекта данных
     const thumbnailElement = thumbnailTemplate.cloneNode(true);
     // Устанавливаем значения на основании полученных данных
@@ -25,4 +25,4 @@ const renderThumbnails = (array) => {
   picturesContainer.append(thumbnailFragment);
 };
 
-export {renderThumbnails};
+export { renderThumbnails };

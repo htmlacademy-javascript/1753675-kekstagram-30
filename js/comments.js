@@ -51,4 +51,4 @@ const renderComments = (comments) => {
   commentsLoader.addEventListener('click', loadMoreComments);
 };
 
-export {renderComments};
+export { renderComments };

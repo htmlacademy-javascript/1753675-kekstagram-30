@@ -1,11 +1,18 @@
-import {generatePhotoArray} from './generate-data.js';
-import {renderThumbnails} from './photo-gallery.js';
-import {onThumbnailClick} from './fullscreen-photo.js';
-import {setupUploadImageForm} from './form.js';
+import { getData } from './api.js';
+import { showDataErrorMessage } from './utils.js';
+import { renderThumbnails } from './photo-gallery.js';
+import { onThumbnailClick } from './fullscreen-photo.js';
+import { setupUploadImageForm } from './form.js';
 
-const OBJECTS_NUM = 25; // количество сгенерированных объектов
-const photoArray = generatePhotoArray(OBJECTS_NUM); // генерируем массив с данными и сохраняем
+const initializeApp = async () => {
+  try {
+    const pictures = await getData();
+    renderThumbnails(pictures);
+    onThumbnailClick(pictures);
+    setupUploadImageForm();
+  } catch {
+    showDataErrorMessage();
+  }
+};
 
-renderThumbnails(photoArray);
-onThumbnailClick(photoArray);
-setupUploadImageForm();
+initializeApp();

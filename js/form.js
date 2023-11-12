@@ -1,6 +1,7 @@
-import {isEscapeKey} from './utils.js';
-import {configureUploadForm, isValidForm, resetValidate} from './validation.js';
-import {initializeEffectSlider, resetEffect} from './effects.js';
+import { isEscapeKey, showuUploadSuccessMessage, showuUploadFailureMessage } from './utils.js';
+import { configureUploadForm, isValidForm, resetValidate } from './validation.js';
+import { initializeEffectSlider, resetEffect } from './effects.js';
+import { sendData } from './api.js';
 
 const uploadImageForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadImageForm.querySelector('.img-upload__input');
@@ -12,6 +13,13 @@ const commentInput = uploadImageForm.querySelector('.text__description');
 const scaleControlValue = uploadImageForm.querySelector('.scale__control--value');
 const scaleControlSmaller = uploadImageForm.querySelector('.scale__control--smaller');
 const scaleControlBigger = uploadImageForm.querySelector('.scale__control--bigger');
+const submitButton = uploadImageForm.querySelector('.img-upload__submit');
+
+const toggleSubmitButton = (isDisabled) => {
+  submitButton.disabled = isDisabled;
+};
+
+const isErrorMessageExists = () => Boolean(document.querySelector('.error'));
 
 // Обрабатываем загрузку изображения
 const handleImageUpload = () => {
@@ -31,10 +39,11 @@ const handleImageUpload = () => {
 };
 
 // Закрываем окно редактора изображения
-const closeImageEditor = () => {
+const closeImageEditor = (form) => {
   // Сбрасываем значения и состояние формы редактирования
-  uploadImageForm.reset();
+  form.reset();
   resetEffect();
+  resetValidate();
   overlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
 };
@@ -48,23 +57,30 @@ const handleKeyDown = (evt) => {
     const isHashtagsInputFocused = document.activeElement === hashtagsInput;
 
     // Если фокус не находится на поле ввода комментария или хэштега, закрываем редактор изображения
-    if (!isCommentInputFocused && !isHashtagsInputFocused) {
+    if (!isCommentInputFocused && !isHashtagsInputFocused && !isErrorMessageExists()) {
       closeImageEditor();
+    }
+  }
+};
+
+const sendForm = async (form) => {
+  if (isValidForm()) {
+    toggleSubmitButton(true);
+    try {
+      await sendData(new FormData(form));
+      showuUploadSuccessMessage();
+      closeImageEditor(uploadImageForm);
+    } catch {
+      showuUploadFailureMessage();
+    } finally {
+      toggleSubmitButton(false);
     }
   }
 };
 
 const handleSubmitForm = (evt) => {
   evt.preventDefault();
-
-  // Проверяем валидна ли форма
-  if (isValidForm()) {
-    // Если форма валидна, можно отправить данные
-    uploadImageForm.submit();
-    // Сбрасываем валидацию формы
-    resetValidate();
-    resetEffect();
-  }
+  sendForm(evt.target);
 };
 
 // Управляем масштабом загруженного изображения
@@ -121,4 +137,4 @@ const setupUploadImageForm = () => {
   initializeEffectSlider();
 };
 
-export {setupUploadImageForm};
+export { setupUploadImageForm };

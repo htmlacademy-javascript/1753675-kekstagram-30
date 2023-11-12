@@ -116,4 +116,4 @@ const initializeEffectSlider = () => {
   }
 };
 
-export {initializeEffectSlider, resetEffect};
+export { initializeEffectSlider, resetEffect };
