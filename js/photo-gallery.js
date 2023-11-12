@@ -18,11 +18,11 @@ const renderThumbnails = (array) => {
     thumbnailElement.querySelector('.picture__comments').textContent = comments.length;
     thumbnailElement.setAttribute('data-index', index);
     // Добавляем миниатюру во фрагмент
-    thumbnailFragment.appendChild(thumbnailElement);
+    thumbnailFragment.append(thumbnailElement);
   });
 
   // Добавляем фрагмент с миниатюрами в контейнер
-  picturesContainer.appendChild(thumbnailFragment);
+  picturesContainer.append(thumbnailFragment);
 };
 
 export {renderThumbnails};
