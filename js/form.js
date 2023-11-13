@@ -63,24 +63,23 @@ const handleKeyDown = (evt) => {
   }
 };
 
-const sendForm = async (form) => {
+const sendForm = (evt) => {
   if (isValidForm()) {
     toggleSubmitButton(true);
-    try {
-      await sendData(new FormData(form));
-      showuUploadSuccessMessage();
-      closeImageEditor(uploadImageForm);
-    } catch {
-      showuUploadFailureMessage();
-    } finally {
-      toggleSubmitButton(false);
-    }
+    const formData = new FormData(evt.target);
+    sendData(formData)
+      .then(() => {
+        showuUploadSuccessMessage();
+        closeImageEditor(uploadImageForm);
+      })
+      .catch(showuUploadFailureMessage)
+      .finally(() => toggleSubmitButton(false));
   }
 };
 
 const handleSubmitForm = (evt) => {
   evt.preventDefault();
-  sendForm(evt.target);
+  sendForm(evt);
 };
 
 // Управляем масштабом загруженного изображения

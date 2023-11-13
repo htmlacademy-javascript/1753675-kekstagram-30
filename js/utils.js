@@ -27,15 +27,16 @@ const showDataErrorMessage = () => {
   }, REMOVE_ALERT_TIMEOUT);
 };
 
-const showUploadMessage = (template, button = null) => {
+const showUploadMessage = (template, button) => {
   const uploadMessage = template.cloneNode(true);
   document.body.append(uploadMessage);
-  uploadMessage.querySelector(button).addEventListener('click', onCloseButtonClick);
+  const uploadMessageButton = uploadMessage.querySelector(button);
+  uploadMessageButton.addEventListener('click', onCloseButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
 const showuUploadSuccessMessage = () => {
-  showUploadMessage(uploadSuccessMessageTemplate, '.success_button');
+  showUploadMessage(uploadSuccessMessageTemplate, '.success__button');
 };
 
 const showuUploadFailureMessage = () => {
