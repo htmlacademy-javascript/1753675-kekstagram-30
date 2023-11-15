@@ -14,10 +14,6 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
-const onCloseButtonClick = () => {
-  hideUploadMessage();
-};
-
 const showDataErrorMessage = () => {
   const dataErrorMessage = dataErrorMessageTemplate.cloneNode(true);
   document.body.append(dataErrorMessage);
@@ -29,9 +25,9 @@ const showDataErrorMessage = () => {
 
 const showUploadMessage = (template, button) => {
   const uploadMessage = template.cloneNode(true);
-  document.body.append(uploadMessage);
   const uploadMessageButton = uploadMessage.querySelector(button);
-  uploadMessageButton.addEventListener('click', onCloseButtonClick);
+  document.body.append(uploadMessage);
+  uploadMessageButton.addEventListener('click', hideUploadMessage);
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
@@ -44,14 +40,14 @@ const showuUploadFailureMessage = () => {
 };
 
 // Удаляем обработчик нажатия клавиши с document
-function removeDocumentHandler (handler) {
-  document.body.removeEventListener('keydown', handler);
+function removeDocumentKeydownHandler () {
+  document.body.removeEventListener('keydown', onDocumentKeydown);
 }
 
 function hideUploadMessage () {
   const existsMessage = document.querySelector('.success') || document.querySelector('.error');
   existsMessage.remove();
-  removeDocumentHandler(onDocumentKeydown);
+  removeDocumentKeydownHandler();
 }
 
 export { isEscapeKey, showDataErrorMessage, showuUploadSuccessMessage, showuUploadFailureMessage};

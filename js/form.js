@@ -1,6 +1,7 @@
 import { isEscapeKey, showuUploadSuccessMessage, showuUploadFailureMessage } from './utils.js';
 import { configureUploadForm, isValidForm, resetValidate } from './validation.js';
 import { initializeEffectSlider, resetEffect } from './effects.js';
+import { scaleDown, scaleUp, resetScale } from './image-scale.js';
 import { sendData } from './api.js';
 
 const uploadImageForm = document.querySelector('.img-upload__form');
@@ -10,7 +11,6 @@ const cancelButton = uploadImageForm.querySelector('.img-upload__cancel');
 const uploadImagePreview = uploadImageForm.querySelector('.img-upload__preview > img');
 const hashtagsInput = uploadImageForm.querySelector('.text__hashtags');
 const commentInput = uploadImageForm.querySelector('.text__description');
-const scaleControlValue = uploadImageForm.querySelector('.scale__control--value');
 const scaleControlSmaller = uploadImageForm.querySelector('.scale__control--smaller');
 const scaleControlBigger = uploadImageForm.querySelector('.scale__control--bigger');
 const submitButton = uploadImageForm.querySelector('.img-upload__submit');
@@ -39,9 +39,10 @@ const handleImageUpload = () => {
 };
 
 // Закрываем окно редактора изображения
-const closeImageEditor = (form) => {
+const closeImageEditor = () => {
   // Сбрасываем значения и состояние формы редактирования
-  form.reset();
+  uploadImageForm.reset();
+  resetScale();
   resetEffect();
   resetValidate();
   overlay.classList.add('hidden');
@@ -70,7 +71,7 @@ const sendForm = (evt) => {
     sendData(formData)
       .then(() => {
         showuUploadSuccessMessage();
-        closeImageEditor(uploadImageForm);
+        closeImageEditor();
       })
       .catch(showuUploadFailureMessage)
       .finally(() => toggleSubmitButton(false));
@@ -84,37 +85,6 @@ const handleSubmitForm = (evt) => {
 
 // Управляем масштабом загруженного изображения
 const changeScaleImage = () => {
-  const ScaleOptions = {
-    currentScale: 100,
-    minScale: 25,
-    maxScale: 100,
-    step: 25
-  };
-  // Инициализируем начальное значение масштаба
-  let scaleValue = ScaleOptions.currentScale;
-
-  const updateScaleStyle = () => {
-    // Обновляем стили и применяем масштаб к изображению
-    scaleControlValue.value = `${scaleValue}%`;
-    uploadImagePreview.style.transform = `scale(${scaleValue / ScaleOptions.maxScale})`;
-  };
-
-  // Уменьшаем масштаб
-  const scaleDown = () => {
-    if (scaleValue > ScaleOptions.minScale) {
-      scaleValue -= ScaleOptions.step;
-      updateScaleStyle();
-    }
-  };
-
-  // Увеличиваем масштаб
-  const scaleUp = () => {
-    if (scaleValue < ScaleOptions.maxScale) {
-      scaleValue += ScaleOptions.step;
-      updateScaleStyle();
-    }
-  };
-
   // Навешиваем обработчики клика на кнопки
   scaleControlSmaller.addEventListener('click', scaleDown);
   scaleControlBigger.addEventListener('click', scaleUp);
@@ -136,4 +106,4 @@ const setupUploadImageForm = () => {
   initializeEffectSlider();
 };
 
-export { setupUploadImageForm };
+export { setupUploadImageForm, uploadImagePreview };
