@@ -1,5 +1,5 @@
-import {isEscapeKey} from './utils.js';
-import {renderComments} from './comments.js';
+import { isEscapeKey } from './utils.js';
+import { renderComments } from './comments.js';
 
 // Получение ссылок на элементы
 const fullSizePhoto = document.querySelector('.big-picture');
@@ -16,24 +16,23 @@ let isFullSizePhotoOpen = false; // Флаг для проверки откры�
 const closeFullSizePhotoModal = () => {
   fullSizePhoto.classList.add('hidden');
   document.body.classList.remove('modal-open'); // Удаляем класс для блокировки прокрутки страницы
-  removeKeydownHandler();
+  removeDocumentHandler();
   isFullSizePhotoOpen = false;
 };
-
 
 // Обрабатываем событие нажатия клавиши на документе
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) { // Проверяем является ли нажатая клавиша Escape
     evt.preventDefault();
     closeFullSizePhotoModal();
-    removeKeydownHandler();
+    removeDocumentHandler();
   }
 };
 
 // Открываем полноразмерное фото, передавая объект с данными изображения
-const openFullSizePhotoModal = ({url, description, likes, comments}) => {
+const openFullSizePhotoModal = ({ url, description, likes, comments }) => {
   if (isFullSizePhotoOpen) {
-    removeKeydownHandler();
+    removeDocumentHandler();
   }
 
   fullSizePhotoImg.src = url;
@@ -67,8 +66,8 @@ const onThumbnailClick = (data) => {
 };
 
 // Удаляем обработчик нажатия клавиши с document
-function removeKeydownHandler () {
+function removeDocumentHandler () {
   document.body.removeEventListener('keydown', onDocumentKeydown);
 }
 
-export {onThumbnailClick, removeKeydownHandler};
+export { onThumbnailClick};

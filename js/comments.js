@@ -30,7 +30,7 @@ const renderComments = (comments) => {
       commentElement.querySelector('.social__picture').setAttribute('src', avatar);
       commentElement.querySelector('.social__picture').setAttribute('alt', name);
       commentElement.querySelector('.social__text').textContent = message;
-      commentsList.appendChild(commentElement);
+      commentsList.append(commentElement);
       displayedComments++;
       remainingComments--;
     }
@@ -46,9 +46,9 @@ const renderComments = (comments) => {
   // Загружаем первую порцию комментариев
   loadMoreComments();
   // Добавляем фрагмент с комментариями в контейнер
-  commentsList.appendChild(commentFragment);
+  commentsList.append(commentFragment);
   // Добавляем обработчик события на кнопку загрузки
   commentsLoader.addEventListener('click', loadMoreComments);
 };
 
-export {renderComments};
+export { renderComments };

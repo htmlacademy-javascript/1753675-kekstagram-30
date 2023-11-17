@@ -1,6 +1,8 @@
-import {isEscapeKey} from './utils.js';
-import {configureUploadForm, isValidForm, resetValidate} from './validation.js';
-import {initializeEffectSlider, resetEffect} from './effects.js';
+import { isEscapeKey, showuUploadSuccessMessage, showuUploadFailureMessage } from './utils.js';
+import { configureUploadForm, isValidForm, resetValidate } from './validation.js';
+import { initializeEffectSlider, resetEffect } from './effects.js';
+import { scaleDown, scaleUp, resetScale } from './image-scale.js';
+import { sendData } from './api.js';
 
 const uploadImageForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadImageForm.querySelector('.img-upload__input');
@@ -9,9 +11,15 @@ const cancelButton = uploadImageForm.querySelector('.img-upload__cancel');
 const uploadImagePreview = uploadImageForm.querySelector('.img-upload__preview > img');
 const hashtagsInput = uploadImageForm.querySelector('.text__hashtags');
 const commentInput = uploadImageForm.querySelector('.text__description');
-const scaleControlValue = uploadImageForm.querySelector('.scale__control--value');
 const scaleControlSmaller = uploadImageForm.querySelector('.scale__control--smaller');
 const scaleControlBigger = uploadImageForm.querySelector('.scale__control--bigger');
+const submitButton = uploadImageForm.querySelector('.img-upload__submit');
+
+const toggleSubmitButton = (isDisabled) => {
+  submitButton.disabled = isDisabled;
+};
+
+const isErrorMessageExists = () => Boolean(document.querySelector('.error'));
 
 // Обрабатываем загрузку изображения
 const handleImageUpload = () => {
@@ -34,7 +42,9 @@ const handleImageUpload = () => {
 const closeImageEditor = () => {
   // Сбрасываем значения и состояние формы редактирования
   uploadImageForm.reset();
+  resetScale();
   resetEffect();
+  resetValidate();
   overlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
 };
@@ -46,60 +56,36 @@ const handleKeyDown = (evt) => {
     // Проверяем, не находится ли фокус на поле ввода комментария или хэштега
     const isCommentInputFocused = document.activeElement === commentInput;
     const isHashtagsInputFocused = document.activeElement === hashtagsInput;
+    const isImageEditorClosable = !isCommentInputFocused && !isHashtagsInputFocused && !isErrorMessageExists();
 
     // Если фокус не находится на поле ввода комментария или хэштега, закрываем редактор изображения
-    if (!isCommentInputFocused && !isHashtagsInputFocused) {
+    if (isImageEditorClosable) {
       closeImageEditor();
     }
   }
 };
 
+const sendForm = (evt) => {
+  if (isValidForm()) {
+    toggleSubmitButton(true);
+    const formData = new FormData(evt.target);
+    sendData(formData)
+      .then(() => {
+        showuUploadSuccessMessage();
+        closeImageEditor();
+      })
+      .catch(showuUploadFailureMessage)
+      .finally(() => toggleSubmitButton(false));
+  }
+};
+
 const handleSubmitForm = (evt) => {
   evt.preventDefault();
-
-  // Проверяем валидна ли форма
-  if (isValidForm()) {
-    // Если форма валидна, можно отправить данные
-    uploadImageForm.submit();
-    // Сбрасываем валидацию формы
-    resetValidate();
-    resetEffect();
-  }
+  sendForm(evt);
 };
 
 // Управляем масштабом загруженного изображения
 const changeScaleImage = () => {
-  const ScaleOptions = {
-    currentScale: 100,
-    minScale: 25,
-    maxScale: 100,
-    step: 25
-  };
-  // Инициализируем начальное значение масштаба
-  let scaleValue = ScaleOptions.currentScale;
-
-  const updateScaleStyle = () => {
-    // Обновляем стили и применяем масштаб к изображению
-    scaleControlValue.value = `${scaleValue}%`;
-    uploadImagePreview.style.transform = `scale(${scaleValue / ScaleOptions.maxScale})`;
-  };
-
-  // Уменьшаем масштаб
-  const scaleDown = () => {
-    if (scaleValue > ScaleOptions.minScale) {
-      scaleValue -= ScaleOptions.step;
-      updateScaleStyle();
-    }
-  };
-
-  // Увеличиваем масштаб
-  const scaleUp = () => {
-    if (scaleValue < ScaleOptions.maxScale) {
-      scaleValue += ScaleOptions.step;
-      updateScaleStyle();
-    }
-  };
-
   // Навешиваем обработчики клика на кнопки
   scaleControlSmaller.addEventListener('click', scaleDown);
   scaleControlBigger.addEventListener('click', scaleUp);
@@ -121,4 +107,4 @@ const setupUploadImageForm = () => {
   initializeEffectSlider();
 };
 
-export {setupUploadImageForm};
+export { setupUploadImageForm, uploadImagePreview };
