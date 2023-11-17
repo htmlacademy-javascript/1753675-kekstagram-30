@@ -56,9 +56,10 @@ const handleKeyDown = (evt) => {
     // Проверяем, не находится ли фокус на поле ввода комментария или хэштега
     const isCommentInputFocused = document.activeElement === commentInput;
     const isHashtagsInputFocused = document.activeElement === hashtagsInput;
+    const isImageEditorClosable = !isCommentInputFocused && !isHashtagsInputFocused && !isErrorMessageExists();
 
     // Если фокус не находится на поле ввода комментария или хэштега, закрываем редактор изображения
-    if (!isCommentInputFocused && !isHashtagsInputFocused && !isErrorMessageExists()) {
+    if (isImageEditorClosable) {
       closeImageEditor();
     }
   }

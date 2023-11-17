@@ -15,7 +15,7 @@ const ErrorText = {
   [Method.POST]: 'Не удалось загрузить файл. Попробуйте ещё раз'
 };
 
-const fetchData = async (url, method = [Method.GET], body = null) => {
+const fetchData = async (url, method = Method.GET, body = null) => {
   const response = await fetch(url, { method, body });
   if (!response.ok) {
     throw new Error(`Произошла ошибка: ${ErrorText[method]}`);
