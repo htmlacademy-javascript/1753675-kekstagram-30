@@ -15,10 +15,12 @@ const scaleControlSmaller = uploadImageForm.querySelector('.scale__control--smal
 const scaleControlBigger = uploadImageForm.querySelector('.scale__control--bigger');
 const submitButton = uploadImageForm.querySelector('.img-upload__submit');
 
+// Переключаем состояние кнопки отправки формы
 const toggleSubmitButton = (isDisabled) => {
   submitButton.disabled = isDisabled;
 };
 
+// Проверяем есть ли на странице сообщения об ошибках
 const isErrorMessageExists = () => Boolean(document.querySelector('.error'));
 
 // Обрабатываем загрузку изображения
@@ -26,9 +28,9 @@ const handleImageUpload = () => {
 // Создаём через конструктор экземпляр FileReader
   const reader = new FileReader();
 
-  reader.onload = function (evt) {
+  reader.onload = function (event) {
     // Устанавливаем полученный URL в качестве источника изображения
-    uploadImagePreview.src = evt.target.result;
+    uploadImagePreview.src = event.target.result;
   };
 
   // Читаем данные файла в формате Data URL
@@ -50,9 +52,9 @@ const closeImageEditor = () => {
 };
 
 // Обрабатываем нажатие Esca
-const handleKeyDown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
+const handleKeyDown = (event) => {
+  if (isEscapeKey(event)) {
+    event.preventDefault();
     // Проверяем, не находится ли фокус на поле ввода комментария или хэштега
     const isCommentInputFocused = document.activeElement === commentInput;
     const isHashtagsInputFocused = document.activeElement === hashtagsInput;
@@ -65,23 +67,32 @@ const handleKeyDown = (evt) => {
   }
 };
 
-const sendForm = (evt) => {
+// Отправляем форму на сервер
+const sendForm = (event) => {
+  // Проверяем, прошла ли форма валидацию перед отправкой
   if (isValidForm()) {
+    // Если форма валидна, отключаем кнопку отправки
     toggleSubmitButton(true);
-    const formData = new FormData(evt.target);
+    // Создаем объект FormData из целевого элемента события
+    const formData = new FormData(event.target);
+    // Отправляем данные формы на сервер
     sendData(formData)
       .then(() => {
+        // Если отправка прошла успешно, показываем сообщение об успешной загрузке
         showuUploadSuccessMessage();
+        // Закрываем окно редактора изображения
         closeImageEditor();
       })
+      // В случае ошибки показываем сообщение о неудачной загрузке
       .catch(showuUploadFailureMessage)
+      // В любом случае после попытки отправить форму включаем обратно кнопку отправки
       .finally(() => toggleSubmitButton(false));
   }
 };
 
-const handleSubmitForm = (evt) => {
-  evt.preventDefault();
-  sendForm(evt);
+const handleSubmitForm = (event) => {
+  event.preventDefault();
+  sendForm(event);
 };
 
 // Управляем масштабом загруженного изображения

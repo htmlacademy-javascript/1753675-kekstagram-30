@@ -78,14 +78,14 @@ const resetEffect = () => {
 };
 
 // Обрабатываем клик по эффекту фильтра
-const onEffectClick = (evt) => {
-  if (evt.target.value === 'none') {
+const onEffectClick = (event) => {
+  if (event.target.value === 'none') {
     resetEffect();
     return;
   }
 
   effectSliderContainer.classList.remove('hidden');
-  const { style, unit, sliderOptions } = EffectConfig[evt.target.value];
+  const { style, unit, sliderOptions } = EffectConfig[event.target.value];
 
   if (activeSlider) {
     // Если слайдер уже существует, обновляем его параметры

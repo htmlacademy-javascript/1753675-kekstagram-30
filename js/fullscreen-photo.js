@@ -21,9 +21,9 @@ const closeFullSizePhotoModal = () => {
 };
 
 // Обрабатываем событие нажатия клавиши на документе
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt)) { // Проверяем является ли нажатая клавиша Escape
-    evt.preventDefault();
+const onDocumentKeydown = (event) => {
+  if (isEscapeKey(event)) { // Проверяем является ли нажатая клавиша Escape
+    event.preventDefault();
     closeFullSizePhotoModal();
     removeDocumentHandler();
   }
@@ -51,11 +51,11 @@ const openFullSizePhotoModal = ({ url, description, likes, comments }) => {
 
 // Обрабатываем событие клика на миниатюрах
 const onThumbnailClick = (data) => {
-  picturesContainer.addEventListener('click', (evt) => {
-    const thumbnailLink = evt.target.closest('a.picture'); // Ищем ближайший родительский элемент по селектору
+  picturesContainer.addEventListener('click', (event) => {
+    const thumbnailLink = event.target.closest('a.picture'); // Ищем ближайший родительский элемент по селектору
 
     if (thumbnailLink) {
-      evt.preventDefault();
+      event.preventDefault();
       const thumbnailIndex = data[thumbnailLink.dataset.index]; // Получаем объект по атрибуту data-index
 
       if (thumbnailIndex) {
