@@ -26,9 +26,9 @@ const handleImageUpload = () => {
 // Создаём через конструктор экземпляр FileReader
   const reader = new FileReader();
 
-  reader.onload = function (evt) {
+  reader.onload = function (event) {
     // Устанавливаем полученный URL в качестве источника изображения
-    uploadImagePreview.src = evt.target.result;
+    uploadImagePreview.src = event.target.result;
   };
 
   // Читаем данные файла в формате Data URL
@@ -50,9 +50,9 @@ const closeImageEditor = () => {
 };
 
 // Обрабатываем нажатие Esca
-const handleKeyDown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
+const handleKeyDown = (event) => {
+  if (isEscapeKey(event)) {
+    event.preventDefault();
     // Проверяем, не находится ли фокус на поле ввода комментария или хэштега
     const isCommentInputFocused = document.activeElement === commentInput;
     const isHashtagsInputFocused = document.activeElement === hashtagsInput;
@@ -65,10 +65,10 @@ const handleKeyDown = (evt) => {
   }
 };
 
-const sendForm = (evt) => {
+const sendForm = (event) => {
   if (isValidForm()) {
     toggleSubmitButton(true);
-    const formData = new FormData(evt.target);
+    const formData = new FormData(event.target);
     sendData(formData)
       .then(() => {
         showuUploadSuccessMessage();
@@ -79,9 +79,9 @@ const sendForm = (evt) => {
   }
 };
 
-const handleSubmitForm = (evt) => {
-  evt.preventDefault();
-  sendForm(evt);
+const handleSubmitForm = (event) => {
+  event.preventDefault();
+  sendForm(event);
 };
 
 // Управляем масштабом загруженного изображения
