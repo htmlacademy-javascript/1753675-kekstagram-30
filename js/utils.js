@@ -20,8 +20,11 @@ const onDocumentKeydown = (event) => {
 };
 
 // Отображаем сообщение об ошибке при загрузке данных
-const showDataErrorMessage = () => {
+const showDataErrorMessage = (text = null) => {
   const dataErrorMessage = dataErrorMessageTemplate.cloneNode(true);
+  if (text) {
+    dataErrorMessage.querySelector('.data-error__title').textContent = text;
+  }
   document.body.append(dataErrorMessage);
 
   setTimeout(() => {
