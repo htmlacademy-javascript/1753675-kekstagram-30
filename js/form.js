@@ -15,10 +15,12 @@ const scaleControlSmaller = uploadImageForm.querySelector('.scale__control--smal
 const scaleControlBigger = uploadImageForm.querySelector('.scale__control--bigger');
 const submitButton = uploadImageForm.querySelector('.img-upload__submit');
 
+// Переключаем состояние кнопки отправки формы
 const toggleSubmitButton = (isDisabled) => {
   submitButton.disabled = isDisabled;
 };
 
+// Проверяем есть ли на странице сообщения об ошибках
 const isErrorMessageExists = () => Boolean(document.querySelector('.error'));
 
 // Обрабатываем загрузку изображения
@@ -65,16 +67,25 @@ const handleKeyDown = (event) => {
   }
 };
 
+// Отправляем форму на сервер
 const sendForm = (event) => {
+  // Проверяем, прошла ли форма валидацию перед отправкой
   if (isValidForm()) {
+    // Если форма валидна, отключаем кнопку отправки
     toggleSubmitButton(true);
+    // Создаем объект FormData из целевого элемента события
     const formData = new FormData(event.target);
+    // Отправляем данные формы на сервер
     sendData(formData)
       .then(() => {
+        // Если отправка прошла успешно, показываем сообщение об успешной загрузке
         showuUploadSuccessMessage();
+        // Закрываем окно редактора изображения
         closeImageEditor();
       })
+      // В случае ошибки показываем сообщение о неудачной загрузке
       .catch(showuUploadFailureMessage)
+      // В любом случае после попытки отправить форму включаем обратно кнопку отправки
       .finally(() => toggleSubmitButton(false));
   }
 };

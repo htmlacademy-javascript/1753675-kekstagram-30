@@ -1,5 +1,5 @@
 import { getRandomNumber } from './utils.js';
-import { renderThumbnails } from './photo-gallery.js'
+import { renderThumbnails } from './photo-gallery.js';
 
 const RANDOM_PHOTO_COUNT = 10;
 const imagesFilterContainer = document.querySelector('.img-filters');
