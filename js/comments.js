@@ -9,9 +9,7 @@ const commentsLoader = document.querySelector('.comments-loader');
 // Отображаем комментарии на странице
 const renderComments = (comments) => {
   let displayedComments = 0; // Количество показанных комментариев
-  let remainingComments = comments.length - displayedComments; // Количество оставшихся комментариев
-  // Создаем фрагмент для добавления комментариев
-  const commentFragment = document.createDocumentFragment();
+  let remainingComments = comments.length; // Количество оставшихся комментариев
   // Очищаем контейнер с комментариями
   commentsList.innerHTML = '';
 
@@ -20,17 +18,24 @@ const renderComments = (comments) => {
     commentCount.textContent = displayedComments.toString();
   };
 
+  const createComment = ({ avatar, message, name }) => {
+    const commentElement = commentTemplate.cloneNode(true);
+    const commentAuthor = commentElement.querySelector('.social__picture');
+    const commentText = commentElement.querySelector('.social__text');
+    commentAuthor.setAttribute('src', avatar);
+    commentAuthor.setAttribute('alt', name);
+    commentText.textContent = message;
+
+    return commentElement;
+  };
+
   const loadMoreComments = () => {
     const commentsToRender = Math.min(remainingComments, COMMENTS_CHUNK_SIZE); // Количество комментариев для загрузки
     commentsLoader.classList.remove('hidden');
 
     for (let i = 0; i < commentsToRender; i++) {
-      const { avatar, message, name } = comments[displayedComments];
-      const commentElement = commentTemplate.cloneNode(true);
-      commentElement.querySelector('.social__picture').setAttribute('src', avatar);
-      commentElement.querySelector('.social__picture').setAttribute('alt', name);
-      commentElement.querySelector('.social__text').textContent = message;
-      commentsList.append(commentElement);
+      const comment = createComment(comments[i]);
+      commentsList.append(comment);
       displayedComments++;
       remainingComments--;
     }
@@ -45,8 +50,6 @@ const renderComments = (comments) => {
 
   // Загружаем первую порцию комментариев
   loadMoreComments();
-  // Добавляем фрагмент с комментариями в контейнер
-  commentsList.append(commentFragment);
   // Добавляем обработчик события на кнопку загрузки
   commentsLoader.addEventListener('click', loadMoreComments);
 };

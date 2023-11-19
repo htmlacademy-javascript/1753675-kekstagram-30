@@ -1,3 +1,5 @@
+import { onThumbnailClick } from './fullscreen-photo.js';
+
 // Получаем ссылку на контейнер, где будут отображаться миниатюры фотографий
 const picturesContainer = document.querySelector('.pictures');
 // Получаем шаблон для создания миниатюр фотографий
@@ -23,6 +25,7 @@ const renderThumbnails = (array) => {
 
   // Добавляем фрагмент с миниатюрами в контейнер
   picturesContainer.append(thumbnailFragment);
+  onThumbnailClick(array);
 };
 
 export { renderThumbnails };

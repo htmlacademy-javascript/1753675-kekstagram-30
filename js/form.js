@@ -10,6 +10,7 @@ const uploadInput = uploadImageForm.querySelector('.img-upload__input');
 const overlay = uploadImageForm.querySelector('.img-upload__overlay');
 const cancelButton = uploadImageForm.querySelector('.img-upload__cancel');
 const uploadImagePreview = uploadImageForm.querySelector('.img-upload__preview > img');
+const effectImagePreviews = uploadImageForm.querySelectorAll('.effects__preview');
 const hashtagsInput = uploadImageForm.querySelector('.text__hashtags');
 const commentInput = uploadImageForm.querySelector('.text__description');
 const scaleControlSmaller = uploadImageForm.querySelector('.scale__control--smaller');
@@ -33,9 +34,13 @@ const handleImageUpload = () => {
     // Создаём через конструктор экземпляр FileReader
     const reader = new FileReader();
 
-    reader.onload = function (event) {
+    reader.onload = function () {
       // Устанавливаем полученный URL в качестве источника изображения
-      uploadImagePreview.src = event.target.result;
+      uploadImagePreview.src = URL.createObjectURL(file);
+
+      effectImagePreviews.forEach((preview) => {
+        preview.style.backgroundImage = `url('${uploadImagePreview.src}')`;
+      });
     };
 
     // Читаем данные файла в формате Data URL
