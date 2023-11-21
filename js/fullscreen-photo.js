@@ -1,5 +1,5 @@
 import { isEscapeKey, onOverlayClick } from './utils.js';
-import { renderComments } from './comments.js';
+import { renderComments, removeCommentsLoader } from './comments.js';
 
 // Получение ссылок на элементы
 const fullSizePhoto = document.querySelector('.big-picture');
@@ -16,6 +16,7 @@ const closeFullSizePhotoModal = () => {
   fullSizePhoto.classList.add('hidden');
   document.body.classList.remove('modal-open'); // Удаляем класс для блокировки прокрутки страницы
   removeDocumentHandler();
+  removeCommentsLoader();
   fullSizePhoto.removeEventListener('click', onPhotoOverlayClick);
   isFullSizePhotoOpen = false;
 };
