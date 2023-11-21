@@ -1,4 +1,4 @@
-import { isEscapeKey } from './utils.js';
+import { isEscapeKey, onOverlayClick } from './utils.js';
 import { renderComments } from './comments.js';
 
 // Получение ссылок на элементы
@@ -16,6 +16,7 @@ const closeFullSizePhotoModal = () => {
   fullSizePhoto.classList.add('hidden');
   document.body.classList.remove('modal-open'); // Удаляем класс для блокировки прокрутки страницы
   removeDocumentHandler();
+  fullSizePhoto.removeEventListener('click', onPhotoOverlayClick);
   isFullSizePhotoOpen = false;
 };
 
@@ -44,6 +45,7 @@ const openFullSizePhotoModal = ({ url, description, likes, comments }) => {
   document.body.classList.add('modal-open'); // Добавляем класс для блокировки прокрутки страницы
   fullSizePhotoCloseBtn.addEventListener('click', closeFullSizePhotoModal);
   document.body.addEventListener('keydown', onDocumentKeydown);
+  fullSizePhoto.addEventListener('click', onPhotoOverlayClick);
   isFullSizePhotoOpen = true;
 };
 
@@ -62,6 +64,10 @@ const onThumbnailClick = (array) => {
     }
   });
 };
+
+function onPhotoOverlayClick (event) {
+  onOverlayClick(event, closeFullSizePhotoModal);
+}
 
 // Удаляем обработчик нажатия клавиши с document
 function removeDocumentHandler () {

@@ -1,5 +1,5 @@
 // Базовый URL для запросов
-const BASE_URL = 'https://30.javascript.pages.academy/kekstagram';
+const BASE_URL = 'https://30.javascript.pages.academy/kekstagram/';
 
 const Method = {
   GET: 'GET',
@@ -8,7 +8,7 @@ const Method = {
 
 // Определение маршрутов для разных HTTP-методов
 const Routes = {
-  [Method.GET]: `${BASE_URL}/data`,
+  [Method.GET]: `${BASE_URL}data`,
   [Method.POST]: BASE_URL
 };
 

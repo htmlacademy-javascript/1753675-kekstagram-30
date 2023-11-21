@@ -52,6 +52,12 @@ const showuUploadFailureMessage = () => {
   showUploadMessage(uploadFailureMessageTemplate, '.error__button');
 };
 
+const onOverlayClick = (event, callback) => {
+  if (event.currentTarget !== event.target.closest('div') && event.target === event.currentTarget) {
+    callback();
+  }
+};
+
 // Функция для отложенного выполнения колбэка с заданным таймаутом
 const debounce = (callback, timeoutDelay = 500) => {
   let timeoutId;
@@ -77,4 +83,4 @@ function hideUploadMessage () {
   removeDocumentKeydownHandler();
 }
 
-export { getRandomNumber, isEscapeKey, showDataErrorMessage, showuUploadSuccessMessage, showuUploadFailureMessage, debounce};
+export { getRandomNumber, isEscapeKey, showDataErrorMessage, showuUploadSuccessMessage, showuUploadFailureMessage, debounce, onOverlayClick};

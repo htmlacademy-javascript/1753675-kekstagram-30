@@ -45,6 +45,7 @@ const renderComments = (comments) => {
     // Скрываем кнопку загрузки, если больше нет комментариев для показа
     if (remainingComments === 0) {
       commentsLoader.classList.add('hidden');
+      commentsLoader.removeEventListener('click', loadMoreComments);
     }
   };
 
