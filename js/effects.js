@@ -101,7 +101,7 @@ const onEffectClick = (event) => {
     // Обновляем эффекты фильтра при изменении слайдера
     activeSlider.on('update', () => {
       uploadImagePreview.style.filter = `${style}(${activeSlider.get()}${unit})`;
-      effectLevelField.value = activeSlider.get();
+      effectLevelField.value = Number(activeSlider.get());
     });
   }
 };

@@ -1,14 +1,16 @@
-import { isEscapeKey, showuUploadSuccessMessage, showuUploadFailureMessage } from './utils.js';
+import { isEscapeKey, showuUploadSuccessMessage, showuUploadFailureMessage, showDataErrorMessage } from './utils.js';
 import { configureUploadForm, isValidForm, resetValidate } from './validation.js';
 import { initializeEffectSlider, resetEffect } from './effects.js';
 import { scaleDown, scaleUp, resetScale } from './image-scale.js';
 import { sendData } from './api.js';
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const uploadImageForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadImageForm.querySelector('.img-upload__input');
 const overlay = uploadImageForm.querySelector('.img-upload__overlay');
 const cancelButton = uploadImageForm.querySelector('.img-upload__cancel');
 const uploadImagePreview = uploadImageForm.querySelector('.img-upload__preview > img');
+const effectImagePreviews = uploadImageForm.querySelectorAll('.effects__preview');
 const hashtagsInput = uploadImageForm.querySelector('.text__hashtags');
 const commentInput = uploadImageForm.querySelector('.text__description');
 const scaleControlSmaller = uploadImageForm.querySelector('.scale__control--smaller');
@@ -25,19 +27,30 @@ const isErrorMessageExists = () => Boolean(document.querySelector('.error'));
 
 // Обрабатываем загрузку изображения
 const handleImageUpload = () => {
-// Создаём через конструктор экземпляр FileReader
-  const reader = new FileReader();
+  const file = uploadInput.files[0];
+  const fileExtension = file.name.split('.').pop().toLowerCase();
 
-  reader.onload = function (event) {
-    // Устанавливаем полученный URL в качестве источника изображения
-    uploadImagePreview.src = event.target.result;
-  };
+  if (FILE_TYPES.includes(fileExtension)) {
+    // Создаём через конструктор экземпляр FileReader
+    const reader = new FileReader();
 
-  // Читаем данные файла в формате Data URL
-  reader.readAsDataURL(uploadInput.files[0]);
-  // Показываем оверлей и добавляем класс к элементу body для отображения модального окна
-  overlay.classList.remove('hidden');
-  document.body.classList.add('modal-open');
+    reader.onload = function () {
+      // Устанавливаем полученный URL в качестве источника изображения
+      uploadImagePreview.src = URL.createObjectURL(file);
+
+      effectImagePreviews.forEach((preview) => {
+        preview.style.backgroundImage = `url('${uploadImagePreview.src}')`;
+      });
+    };
+
+    // Читаем данные файла в формате Data URL
+    reader.readAsDataURL(file);
+    // Показываем оверлей и добавляем класс к элементу body для отображения модального окна
+    overlay.classList.remove('hidden');
+    document.body.classList.add('modal-open');
+  } else {
+    showDataErrorMessage('Выбран некорректный формат файла. Выберите файл в формате JPG, JPEG или PNG.');
+  }
 };
 
 // Закрываем окно редактора изображения

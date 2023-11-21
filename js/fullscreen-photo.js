@@ -1,5 +1,5 @@
-import { isEscapeKey } from './utils.js';
-import { renderComments } from './comments.js';
+import { isEscapeKey, onOverlayClick } from './utils.js';
+import { renderComments, removeCommentsLoader } from './comments.js';
 
 // Получение ссылок на элементы
 const fullSizePhoto = document.querySelector('.big-picture');
@@ -8,7 +8,6 @@ const likesCount = fullSizePhoto.querySelector('.likes-count');
 const photoDescription = fullSizePhoto.querySelector('.social__caption');
 const picturesContainer = document.querySelector('.pictures');
 const fullSizePhotoCloseBtn = fullSizePhoto.querySelector('.big-picture__cancel');
-const commentsShownCount = document.querySelector('.social__comment-shown-count');
 const commentsTotalCount = document.querySelector('.social__comment-total-count');
 let isFullSizePhotoOpen = false; // Флаг для проверки открыто ли модальное окно
 
@@ -17,6 +16,8 @@ const closeFullSizePhotoModal = () => {
   fullSizePhoto.classList.add('hidden');
   document.body.classList.remove('modal-open'); // Удаляем класс для блокировки прокрутки страницы
   removeDocumentHandler();
+  removeCommentsLoader();
+  fullSizePhoto.removeEventListener('click', onPhotoOverlayClick);
   isFullSizePhotoOpen = false;
 };
 
@@ -39,24 +40,24 @@ const openFullSizePhotoModal = ({ url, description, likes, comments }) => {
   fullSizePhotoImg.alt = description;
   photoDescription.textContent = description;
   likesCount.textContent = likes;
-  commentsShownCount.textContent = comments.length;
   commentsTotalCount.textContent = comments.length;
   renderComments(comments); // Отрисовываем комментарии передавая в качестве аргумента массив данных
   fullSizePhoto.classList.remove('hidden');
   document.body.classList.add('modal-open'); // Добавляем класс для блокировки прокрутки страницы
   fullSizePhotoCloseBtn.addEventListener('click', closeFullSizePhotoModal);
   document.body.addEventListener('keydown', onDocumentKeydown);
+  fullSizePhoto.addEventListener('click', onPhotoOverlayClick);
   isFullSizePhotoOpen = true;
 };
 
 // Обрабатываем событие клика на миниатюрах
-const onThumbnailClick = (data) => {
+const onThumbnailClick = (array) => {
   picturesContainer.addEventListener('click', (event) => {
     const thumbnailLink = event.target.closest('a.picture'); // Ищем ближайший родительский элемент по селектору
 
     if (thumbnailLink) {
       event.preventDefault();
-      const thumbnailIndex = data[thumbnailLink.dataset.index]; // Получаем объект по атрибуту data-index
+      const thumbnailIndex = array[thumbnailLink.dataset.index]; // Получаем объект по атрибуту data-index
 
       if (thumbnailIndex) {
         openFullSizePhotoModal(thumbnailIndex);
@@ -64,6 +65,10 @@ const onThumbnailClick = (data) => {
     }
   });
 };
+
+function onPhotoOverlayClick (event) {
+  onOverlayClick(event, closeFullSizePhotoModal);
+}
 
 // Удаляем обработчик нажатия клавиши с document
 function removeDocumentHandler () {

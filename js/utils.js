@@ -20,8 +20,11 @@ const onDocumentKeydown = (event) => {
 };
 
 // Отображаем сообщение об ошибке при загрузке данных
-const showDataErrorMessage = () => {
+const showDataErrorMessage = (text = null) => {
   const dataErrorMessage = dataErrorMessageTemplate.cloneNode(true);
+  if (text) {
+    dataErrorMessage.querySelector('.data-error__title').textContent = text;
+  }
   document.body.append(dataErrorMessage);
 
   setTimeout(() => {
@@ -36,6 +39,7 @@ const showUploadMessage = (template, button) => {
   const uploadMessageButton = uploadMessage.querySelector(button);
   document.body.append(uploadMessage);
   uploadMessageButton.addEventListener('click', hideUploadMessage);
+  uploadMessage.addEventListener('click', onMessageOverlayClick);
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
@@ -47,6 +51,12 @@ const showuUploadSuccessMessage = () => {
 // Отображаем сообщение об неудачной загрузке фотографии
 const showuUploadFailureMessage = () => {
   showUploadMessage(uploadFailureMessageTemplate, '.error__button');
+};
+
+const onOverlayClick = (event, callback) => {
+  if (event.currentTarget !== event.target.closest('div') && event.target === event.currentTarget) {
+    callback();
+  }
 };
 
 // Функция для отложенного выполнения колбэка с заданным таймаутом
@@ -62,6 +72,10 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
+function onMessageOverlayClick (event) {
+  onOverlayClick(event, hideUploadMessage);
+}
+
 // Удаляем обработчик нажатия клавиши с document
 function removeDocumentKeydownHandler () {
   document.body.removeEventListener('keydown', onDocumentKeydown);
@@ -74,4 +88,4 @@ function hideUploadMessage () {
   removeDocumentKeydownHandler();
 }
 
-export { getRandomNumber, isEscapeKey, showDataErrorMessage, showuUploadSuccessMessage, showuUploadFailureMessage, debounce};
+export { getRandomNumber, isEscapeKey, showDataErrorMessage, showuUploadSuccessMessage, showuUploadFailureMessage, debounce, onOverlayClick};
