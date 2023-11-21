@@ -39,6 +39,7 @@ const showUploadMessage = (template, button) => {
   const uploadMessageButton = uploadMessage.querySelector(button);
   document.body.append(uploadMessage);
   uploadMessageButton.addEventListener('click', hideUploadMessage);
+  uploadMessage.addEventListener('click', onMessageOverlayClick);
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
@@ -70,6 +71,10 @@ const debounce = (callback, timeoutDelay = 500) => {
     }, timeoutDelay);
   };
 };
+
+function onMessageOverlayClick (event) {
+  onOverlayClick(event, hideUploadMessage);
+}
 
 // Удаляем обработчик нажатия клавиши с document
 function removeDocumentKeydownHandler () {
