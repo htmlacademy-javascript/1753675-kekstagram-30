@@ -16,6 +16,13 @@ const invalidData = {
   comments: []
 };
 
+const pristineConfig = {
+  classTo: 'img-upload__field-wrapper',
+  errorClass: 'img-upload__field-wrapper--error',
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'p'
+};
+
 const getErrorsText = (value) => () => invalidData[value].map((element) => `<p>${element}</p>`).join(' ');
 
 const validateHashtags = (value) => {
@@ -58,13 +65,6 @@ const validateComments = (value) => {
 };
 
 const configureUploadForm = (uploadForm, hashtagsInput, commentInput) => {
-  const pristineConfig = {
-    classTo: 'img-upload__field-wrapper',
-    errorClass: 'img-upload__field-wrapper--error',
-    errorTextParent: 'img-upload__field-wrapper',
-    errorTextTag: 'p'
-  };
-
   pristine = new Pristine(uploadForm, pristineConfig);
   pristine.addValidator(hashtagsInput, validateHashtags, getErrorsText('hashtags'), true);
   pristine.addValidator(commentInput, validateComments, getErrorsText('comments'));
