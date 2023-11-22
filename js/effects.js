@@ -3,7 +3,7 @@ const uploadImagePreview = document.querySelector('.img-upload__preview > img');
 const effectSliderContainer = document.querySelector('.effect-level');
 const effectSliderElement = effectSliderContainer.querySelector('.effect-level__slider');
 const effectLevelField = effectSliderContainer.querySelector('.effect-level__value');
-// Конфиг эффектов фильтра
+
 const EffectConfig = {
   chrome: {
     style: 'grayscale',
@@ -56,7 +56,6 @@ const EffectConfig = {
   },
 };
 
-// Первоначальный конфиг для инициализации слайдера
 const initialSliderOptions = {
   range: {
     min: 0,
@@ -67,17 +66,14 @@ const initialSliderOptions = {
   connect: 'lower'
 };
 
-// Переменная для хранения активного слайдера
 let activeSlider = null;
 
-// Сбрасываем эффекты
 const resetEffect = () => {
   effectLevelField.value = 0;
   uploadImagePreview.style.filter = '';
   effectSliderContainer.classList.add('hidden');
 };
 
-// Обрабатываем клик по эффекту фильтра
 const onEffectClick = (event) => {
   if (event.target.value === 'none') {
     resetEffect();
@@ -88,7 +84,6 @@ const onEffectClick = (event) => {
   const { style, unit, sliderOptions } = EffectConfig[event.target.value];
 
   if (activeSlider) {
-    // Если слайдер уже существует, обновляем его параметры
     activeSlider.updateOptions({
       range: {
         min: sliderOptions.min,
@@ -98,7 +93,6 @@ const onEffectClick = (event) => {
       step: sliderOptions.step
     });
 
-    // Обновляем эффекты фильтра при изменении слайдера
     activeSlider.on('update', () => {
       uploadImagePreview.style.filter = `${style}(${activeSlider.get()}${unit})`;
       effectLevelField.value = Number(activeSlider.get());
@@ -106,7 +100,6 @@ const onEffectClick = (event) => {
   }
 };
 
-// Инициализируем слайдер эффектов фильтра
 const initializeEffectSlider = () => {
   effectSliderContainer.classList.add('hidden');
   effectsList.addEventListener('change', onEffectClick);
