@@ -18,7 +18,7 @@ const updateScaleStyle = () => {
 };
 
 // Уменьшаем масштаб
-const scaleDown = () => {
+const onScaleDown = () => {
   if (scaleValue > ScaleOptions.minScale) {
     scaleValue -= ScaleOptions.step;
     updateScaleStyle();
@@ -26,7 +26,7 @@ const scaleDown = () => {
 };
 
 // Увеличиваем масштаб
-const scaleUp = () => {
+const onScaleUp = () => {
   if (scaleValue < ScaleOptions.maxScale) {
     scaleValue += ScaleOptions.step;
     updateScaleStyle();
@@ -40,4 +40,4 @@ const resetScale = () => {
   }
 };
 
-export { scaleDown, scaleUp, resetScale };
+export { onScaleDown, onScaleUp, resetScale };

@@ -2,23 +2,27 @@ import { isEscapeKey, onOverlayClick } from './utils.js';
 import { renderComments, removeCommentsLoader } from './comments.js';
 
 // Получение ссылок на элементы
-const fullSizePhoto = document.querySelector('.big-picture');
-const fullSizePhotoImg = fullSizePhoto.querySelector('.big-picture__img img');
-const likesCount = fullSizePhoto.querySelector('.likes-count');
-const photoDescription = fullSizePhoto.querySelector('.social__caption');
+const fullSizePhotoElement = document.querySelector('.big-picture');
+const fullSizePhotoImage = fullSizePhotoElement.querySelector('.big-picture__img img');
+const likesCount = fullSizePhotoElement.querySelector('.likes-count');
+const photoDescription = fullSizePhotoElement.querySelector('.social__caption');
 const picturesContainer = document.querySelector('.pictures');
-const fullSizePhotoCloseBtn = fullSizePhoto.querySelector('.big-picture__cancel');
+const fullSizePhotoCloseButton = fullSizePhotoElement.querySelector('.big-picture__cancel');
 const commentsTotalCount = document.querySelector('.social__comment-total-count');
 let isFullSizePhotoOpen = false; // Флаг для проверки открыто ли модальное окно
 
 // Закрываем полноразмерное фото
 const closeFullSizePhotoModal = () => {
-  fullSizePhoto.classList.add('hidden');
+  fullSizePhotoElement.classList.add('hidden');
   document.body.classList.remove('modal-open'); // Удаляем класс для блокировки прокрутки страницы
   removeDocumentHandler();
   removeCommentsLoader();
-  fullSizePhoto.removeEventListener('click', onPhotoOverlayClick);
+  fullSizePhotoElement.removeEventListener('click', onPhotoOverlayClick);
   isFullSizePhotoOpen = false;
+};
+
+const onCloseButtonClick = () => {
+  closeFullSizePhotoModal();
 };
 
 // Обрабатываем событие нажатия клавиши на документе
@@ -36,17 +40,17 @@ const openFullSizePhotoModal = ({ url, description, likes, comments }) => {
     removeDocumentHandler();
   }
 
-  fullSizePhotoImg.src = url;
-  fullSizePhotoImg.alt = description;
+  fullSizePhotoImage.src = url;
+  fullSizePhotoImage.alt = description;
   photoDescription.textContent = description;
   likesCount.textContent = likes;
   commentsTotalCount.textContent = comments.length;
   renderComments(comments); // Отрисовываем комментарии передавая в качестве аргумента массив данных
-  fullSizePhoto.classList.remove('hidden');
+  fullSizePhotoElement.classList.remove('hidden');
   document.body.classList.add('modal-open'); // Добавляем класс для блокировки прокрутки страницы
-  fullSizePhotoCloseBtn.addEventListener('click', closeFullSizePhotoModal);
+  fullSizePhotoCloseButton.addEventListener('click', onCloseButtonClick);
   document.body.addEventListener('keydown', onDocumentKeydown);
-  fullSizePhoto.addEventListener('click', onPhotoOverlayClick);
+  fullSizePhotoElement.addEventListener('click', onPhotoOverlayClick);
   isFullSizePhotoOpen = true;
 };
 
