@@ -1,7 +1,7 @@
 const effectsList = document.querySelector('.effects__list');
 const uploadImagePreview = document.querySelector('.img-upload__preview > img');
 const effectSliderContainer = document.querySelector('.effect-level');
-const effectSlider = effectSliderContainer.querySelector('.effect-level__slider');
+const effectSliderElement = effectSliderContainer.querySelector('.effect-level__slider');
 const effectLevelField = effectSliderContainer.querySelector('.effect-level__value');
 // Конфиг эффектов фильтра
 const EffectConfig = {
@@ -112,7 +112,7 @@ const initializeEffectSlider = () => {
   effectsList.addEventListener('change', onEffectClick);
 
   if (!activeSlider) {
-    activeSlider = noUiSlider.create(effectSlider, initialSliderOptions);
+    activeSlider = noUiSlider.create(effectSliderElement, initialSliderOptions);
   }
 };
 

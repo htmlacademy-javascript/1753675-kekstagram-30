@@ -33,23 +33,27 @@ const showDataErrorMessage = (text = null) => {
   }, REMOVE_ALERT_TIMEOUT);
 };
 
+const onMessageButtonClick = () => {
+  hideUploadMessage();
+};
+
 // Выводим сообщение о загрузке фотографии
 const showUploadMessage = (template, button) => {
   const uploadMessage = template.cloneNode(true);
   const uploadMessageButton = uploadMessage.querySelector(button);
   document.body.append(uploadMessage);
-  uploadMessageButton.addEventListener('click', hideUploadMessage);
+  uploadMessageButton.addEventListener('click', onMessageButtonClick);
   uploadMessage.addEventListener('click', onMessageOverlayClick);
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
 // Отображаем сообщение об успешной загрузке фотографии
-const showuUploadSuccessMessage = () => {
+const showUploadSuccessMessage = () => {
   showUploadMessage(uploadSuccessMessageTemplate, '.success__button');
 };
 
 // Отображаем сообщение об неудачной загрузке фотографии
-const showuUploadFailureMessage = () => {
+const showUploadFailureMessage = () => {
   showUploadMessage(uploadFailureMessageTemplate, '.error__button');
 };
 
@@ -88,4 +92,4 @@ function hideUploadMessage () {
   removeDocumentKeydownHandler();
 }
 
-export { getRandomNumber, isEscapeKey, showDataErrorMessage, showuUploadSuccessMessage, showuUploadFailureMessage, debounce, onOverlayClick};
+export { getRandomNumber, isEscapeKey, showDataErrorMessage, showUploadSuccessMessage, showUploadFailureMessage, debounce, onOverlayClick};

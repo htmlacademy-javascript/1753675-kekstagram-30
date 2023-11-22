@@ -1,13 +1,13 @@
-import { isEscapeKey, showuUploadSuccessMessage, showuUploadFailureMessage, showDataErrorMessage } from './utils.js';
+import { isEscapeKey, showUploadSuccessMessage, showUploadFailureMessage, showDataErrorMessage } from './utils.js';
 import { configureUploadForm, isValidForm, resetValidate } from './validation.js';
 import { initializeEffectSlider, resetEffect } from './effects.js';
-import { scaleDown, scaleUp, resetScale } from './image-scale.js';
+import { onScaleDown, onScaleUp, resetScale } from './image-scale.js';
 import { sendData } from './api.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const uploadImageForm = document.querySelector('.img-upload__form');
 const uploadInput = uploadImageForm.querySelector('.img-upload__input');
-const overlay = uploadImageForm.querySelector('.img-upload__overlay');
+const overlayElement = uploadImageForm.querySelector('.img-upload__overlay');
 const cancelButton = uploadImageForm.querySelector('.img-upload__cancel');
 const uploadImagePreview = uploadImageForm.querySelector('.img-upload__preview > img');
 const effectImagePreviews = uploadImageForm.querySelectorAll('.effects__preview');
@@ -26,7 +26,7 @@ const toggleSubmitButton = (isDisabled) => {
 const isErrorMessageExists = () => Boolean(document.querySelector('.error'));
 
 // Обрабатываем загрузку изображения
-const handleImageUpload = () => {
+const onImageUpload = () => {
   const file = uploadInput.files[0];
   const fileExtension = file.name.split('.').pop().toLowerCase();
 
@@ -46,7 +46,7 @@ const handleImageUpload = () => {
     // Читаем данные файла в формате Data URL
     reader.readAsDataURL(file);
     // Показываем оверлей и добавляем класс к элементу body для отображения модального окна
-    overlay.classList.remove('hidden');
+    overlayElement.classList.remove('hidden');
     document.body.classList.add('modal-open');
   } else {
     showDataErrorMessage('Выбран некорректный формат файла. Выберите файл в формате JPG, JPEG или PNG.');
@@ -60,12 +60,16 @@ const closeImageEditor = () => {
   resetScale();
   resetEffect();
   resetValidate();
-  overlay.classList.add('hidden');
+  overlayElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
 };
 
+const onCancelButtonClick = () => {
+  closeImageEditor();
+};
+
 // Обрабатываем нажатие Esca
-const handleKeyDown = (event) => {
+const onKeyDown = (event) => {
   if (isEscapeKey(event)) {
     event.preventDefault();
     // Проверяем, не находится ли фокус на поле ввода комментария или хэштега
@@ -92,18 +96,18 @@ const sendForm = (event) => {
     sendData(formData)
       .then(() => {
         // Если отправка прошла успешно, показываем сообщение об успешной загрузке
-        showuUploadSuccessMessage();
+        showUploadSuccessMessage();
         // Закрываем окно редактора изображения
         closeImageEditor();
       })
       // В случае ошибки показываем сообщение о неудачной загрузке
-      .catch(showuUploadFailureMessage)
+      .catch(showUploadFailureMessage)
       // В любом случае после попытки отправить форму включаем обратно кнопку отправки
       .finally(() => toggleSubmitButton(false));
   }
 };
 
-const handleSubmitForm = (event) => {
+const onFormSubmit = (event) => {
   event.preventDefault();
   sendForm(event);
 };
@@ -111,21 +115,21 @@ const handleSubmitForm = (event) => {
 // Управляем масштабом загруженного изображения
 const changeScaleImage = () => {
   // Навешиваем обработчики клика на кнопки
-  scaleControlSmaller.addEventListener('click', scaleDown);
-  scaleControlBigger.addEventListener('click', scaleUp);
+  scaleControlSmaller.addEventListener('click', onScaleDown);
+  scaleControlBigger.addEventListener('click', onScaleUp);
 };
 
 // Настраиваем форму редактирования изображения
 const setupUploadImageForm = () => {
   // Слушаем событие изменения значения инпута загрузки изображения
-  uploadInput.addEventListener('change', handleImageUpload);
+  uploadInput.addEventListener('change', onImageUpload);
   // Слушаем событие клика на кнопку
-  cancelButton.addEventListener('click', closeImageEditor);
-  document.addEventListener('keydown', handleKeyDown);
+  cancelButton.addEventListener('click', onCancelButtonClick);
+  document.addEventListener('keydown', onKeyDown);
   // Вызываем функцию для конфигурации формы валидации
   configureUploadForm(uploadImageForm, hashtagsInput, commentInput);
   // Слушаем событие отправки формы
-  uploadImageForm.addEventListener('submit', handleSubmitForm);
+  uploadImageForm.addEventListener('submit', onFormSubmit);
   // Включаем управление масштабом изображения
   changeScaleImage();
   initializeEffectSlider();

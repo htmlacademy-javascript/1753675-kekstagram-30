@@ -46,6 +46,10 @@ const loadComments = () => {
   }
 };
 
+const onCommentsLoaderClick = () => {
+  loadComments();
+};
+
 // Отображаем комментарии на странице
 const renderComments = (comments) => {
   commentsData = comments;
@@ -55,11 +59,11 @@ const renderComments = (comments) => {
   // Загружаем первую порцию комментариев
   loadComments();
   // Добавляем обработчик события на кнопку загрузки
-  commentsLoader.addEventListener('click', loadComments);
+  commentsLoader.addEventListener('click', onCommentsLoaderClick);
 };
 
 function removeCommentsLoader () {
-  commentsLoader.removeEventListener('click', loadComments);
+  commentsLoader.removeEventListener('click', onCommentsLoaderClick);
 }
 
 export { renderComments, removeCommentsLoader };

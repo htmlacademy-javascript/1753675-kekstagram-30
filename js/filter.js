@@ -47,7 +47,7 @@ const FilterFunctions = {
 
 const setFilterClick = (callback) => {
   imagesFilterForm.addEventListener('click', (event) => {
-    const activeImageFilterButton = imagesFilterContainer.querySelector('.img-filters__button--active');
+    const activeImageFilterButton = imagesFilterContainer.querySelector(`.${activeFilterButtonClass}`);
     const isFilterButtonNotActive = event.target.classList.contains(imageFilterButtonClass) && !event.target.classList.contains(activeFilterButtonClass);
 
     if (isFilterButtonNotActive) {
