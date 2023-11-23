@@ -28,17 +28,12 @@ const imageInputUploadHandler = () => {
   const fileExtension = file.name.split('.').pop().toLowerCase();
 
   if (FILE_TYPES.includes(fileExtension)) {
-    const reader = new FileReader();
+    uploadImagePreview.src = URL.createObjectURL(file);
 
-    reader.onload = function () {
-      uploadImagePreview.src = URL.createObjectURL(file);
+    effectImagePreviews.forEach((preview) => {
+      preview.style.backgroundImage = `url('${uploadImagePreview.src}')`;
+    });
 
-      effectImagePreviews.forEach((preview) => {
-        preview.style.backgroundImage = `url('${uploadImagePreview.src}')`;
-      });
-    };
-
-    reader.readAsDataURL(file);
     overlayElement.classList.remove('hidden');
     document.body.classList.add('modal-open');
   } else {
