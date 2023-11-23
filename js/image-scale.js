@@ -2,39 +2,39 @@ import { uploadImagePreview } from './form.js';
 
 const scaleControlValue = document.querySelector('.scale__control--value');
 
-const ScaleOptions = {
+const scaleOptions = {
   defaultScale: 100,
   minScale: 25,
   maxScale: 100,
   step: 25
 };
 
-let scaleValue = ScaleOptions.defaultScale;
+let scaleValue = scaleOptions.defaultScale;
 
 const updateScaleStyle = () => {
   scaleControlValue.value = `${scaleValue}%`;
-  uploadImagePreview.style.transform = `scale(${scaleValue / ScaleOptions.maxScale})`;
+  uploadImagePreview.style.transform = `scale(${scaleValue / scaleOptions.maxScale})`;
 };
 
-const onScaleDown = () => {
-  if (scaleValue > ScaleOptions.minScale) {
-    scaleValue -= ScaleOptions.step;
+const handleScaleDecrease = () => {
+  if (scaleValue > scaleOptions.minScale) {
+    scaleValue -= scaleOptions.step;
     updateScaleStyle();
   }
 };
 
-const onScaleUp = () => {
-  if (scaleValue < ScaleOptions.maxScale) {
-    scaleValue += ScaleOptions.step;
+const handleScaleIncrease = () => {
+  if (scaleValue < scaleOptions.maxScale) {
+    scaleValue += scaleOptions.step;
     updateScaleStyle();
   }
 };
 
 const resetScale = () => {
-  if (scaleValue < ScaleOptions.maxScale) {
-    scaleValue = ScaleOptions.defaultScale;
+  if (scaleValue < scaleOptions.maxScale) {
+    scaleValue = scaleOptions.defaultScale;
     updateScaleStyle();
   }
 };
 
-export { onScaleDown, onScaleUp, resetScale };
+export { handleScaleDecrease, handleScaleIncrease, resetScale };

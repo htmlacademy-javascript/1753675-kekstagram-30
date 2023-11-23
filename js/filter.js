@@ -1,5 +1,6 @@
 import { getRandomNumber } from './utils.js';
 import { renderThumbnails } from './photo-gallery.js';
+// import { setupThumbnailContainer, picturesContainer } from './fullscreen-photo.js';
 
 const RANDOM_PHOTO_COUNT = 10;
 const imagesFilterContainer = document.querySelector('.img-filters');
@@ -7,6 +8,7 @@ const imagesFilterForm = imagesFilterContainer.querySelector('.img-filters__form
 const inactiveFilterClass = 'img-filters--inactive';
 const imageFilterButtonClass = 'img-filters__button';
 const activeFilterButtonClass = 'img-filters__button--active';
+// let thumbnailClickHandler = setupThumbnailContainer();
 
 const Filter = {
   DEFAULT: 'filter-default',
@@ -39,7 +41,7 @@ const filterByDiscussed = (data) => {
   return currentData;
 };
 
-const FilterFunctions = {
+const filterFunctions = {
   [Filter.DEFAULT]: filterByDefault,
   [Filter.RANDOM]: filterByRandom,
   [Filter.DISCUSSED]: filterByDiscussed
@@ -61,7 +63,8 @@ const setFilterClick = (callback) => {
 const rerenderThumbmnails = (data, target) => {
   const thumbnails = document.querySelectorAll('.picture');
   thumbnails.forEach((element) => element.remove());
-  const filteredData = FilterFunctions[target.id](data);
+  const filteredData = filterFunctions[target.id](data);
+  // picturesContainer.removeEventListener('click', thumbnailClickHandler);
   renderThumbnails(filteredData);
 };
 
