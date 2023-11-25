@@ -13,10 +13,11 @@ let isFullSizePhotoOpen = false;
 const closeFullSizePhotoModal = () => {
   fullSizePhotoElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  removeDocumentHandler();
   removeCommentsLoader();
+  removeDocumentHandler();
   fullSizePhotoElement.removeEventListener('click', photoElementClickHandler);
   isFullSizePhotoOpen = false;
+
 };
 
 const closeButtonClickHandler = () => {
@@ -65,8 +66,6 @@ const setupThumbnailContainer = (array) => {
   };
 
   picturesContainer.addEventListener('click', thumbnailClickHandler);
-
-  return thumbnailClickHandler;
 };
 
 function photoElementClickHandler (event) {
@@ -77,4 +76,4 @@ function removeDocumentHandler () {
   document.body.removeEventListener('keydown', documentKeydownHandler);
 }
 
-export { setupThumbnailContainer, picturesContainer};
+export { setupThumbnailContainer };

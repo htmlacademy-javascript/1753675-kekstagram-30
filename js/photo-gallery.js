@@ -3,7 +3,7 @@ import { setupThumbnailContainer } from './fullscreen-photo.js';
 const picturesContainer = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const renderThumbnails = (array) => {
+const renderThumbnails = (array, isSkipThumbnailContainerSetup) => {
   const thumbnailFragment = document.createDocumentFragment();
 
   array.forEach(({ url, description, likes, comments }, index) => {
@@ -20,7 +20,10 @@ const renderThumbnails = (array) => {
   });
 
   picturesContainer.append(thumbnailFragment);
-  setupThumbnailContainer(array);
+
+  if (!isSkipThumbnailContainerSetup) {
+    setupThumbnailContainer(array);
+  }
 };
 
 export { renderThumbnails };
