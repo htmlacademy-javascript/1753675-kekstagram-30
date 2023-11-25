@@ -1,4 +1,4 @@
-import { isEscapeKey, onOverlayClick } from './utils.js';
+import { isEscapeKey, handleOverlayClick } from './utils.js';
 import { renderComments, removeCommentsLoader } from './comments.js';
 
 const fullSizePhotoElement = document.querySelector('.big-picture');
@@ -13,17 +13,18 @@ let isFullSizePhotoOpen = false;
 const closeFullSizePhotoModal = () => {
   fullSizePhotoElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  removeDocumentHandler();
   removeCommentsLoader();
-  fullSizePhotoElement.removeEventListener('click', onPhotoOverlayClick);
+  removeDocumentHandler();
+  fullSizePhotoElement.removeEventListener('click', photoElementClickHandler);
   isFullSizePhotoOpen = false;
+
 };
 
-const onCloseButtonClick = () => {
+const closeButtonClickHandler = () => {
   closeFullSizePhotoModal();
 };
 
-const onDocumentKeydown = (event) => {
+const documentKeydownHandler = (event) => {
   if (isEscapeKey(event)) {
     event.preventDefault();
     closeFullSizePhotoModal();
@@ -44,14 +45,14 @@ const openFullSizePhotoModal = ({ url, description, likes, comments }) => {
   renderComments(comments);
   fullSizePhotoElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  fullSizePhotoCloseButton.addEventListener('click', onCloseButtonClick);
-  document.body.addEventListener('keydown', onDocumentKeydown);
-  fullSizePhotoElement.addEventListener('click', onPhotoOverlayClick);
+  fullSizePhotoCloseButton.addEventListener('click', closeButtonClickHandler);
+  document.body.addEventListener('keydown', documentKeydownHandler);
+  fullSizePhotoElement.addEventListener('click', photoElementClickHandler);
   isFullSizePhotoOpen = true;
 };
 
-const onThumbnailClick = (array) => {
-  picturesContainer.addEventListener('click', (event) => {
+const setupThumbnailContainer = (array) => {
+  const thumbnailClickHandler = (event) => {
     const thumbnailLink = event.target.closest('a.picture');
 
     if (thumbnailLink) {
@@ -62,15 +63,17 @@ const onThumbnailClick = (array) => {
         openFullSizePhotoModal(thumbnailIndex);
       }
     }
-  });
+  };
+
+  picturesContainer.addEventListener('click', thumbnailClickHandler);
 };
 
-function onPhotoOverlayClick (event) {
-  onOverlayClick(event, closeFullSizePhotoModal);
+function photoElementClickHandler (event) {
+  handleOverlayClick(event, closeFullSizePhotoModal);
 }
 
 function removeDocumentHandler () {
-  document.body.removeEventListener('keydown', onDocumentKeydown);
+  document.body.removeEventListener('keydown', documentKeydownHandler);
 }
 
-export { onThumbnailClick};
+export { setupThumbnailContainer };

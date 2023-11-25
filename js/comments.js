@@ -41,7 +41,7 @@ const loadComments = () => {
   }
 };
 
-const onCommentsLoaderClick = () => {
+const commentsLoaderClickHandler = () => {
   loadComments();
 };
 
@@ -50,11 +50,11 @@ const renderComments = (comments) => {
   commentsList.innerHTML = '';
   loadedCommentsCount = 0;
   loadComments();
-  commentsLoader.addEventListener('click', onCommentsLoaderClick);
+  commentsLoader.addEventListener('click', commentsLoaderClickHandler);
 };
 
 function removeCommentsLoader () {
-  commentsLoader.removeEventListener('click', onCommentsLoaderClick);
+  commentsLoader.removeEventListener('click', commentsLoaderClickHandler);
 }
 
 export { renderComments, removeCommentsLoader };

@@ -39,7 +39,7 @@ const filterByDiscussed = (data) => {
   return currentData;
 };
 
-const FilterFunctions = {
+const filterFunctions = {
   [Filter.DEFAULT]: filterByDefault,
   [Filter.RANDOM]: filterByRandom,
   [Filter.DISCUSSED]: filterByDiscussed
@@ -61,8 +61,8 @@ const setFilterClick = (callback) => {
 const rerenderThumbmnails = (data, target) => {
   const thumbnails = document.querySelectorAll('.picture');
   thumbnails.forEach((element) => element.remove());
-  const filteredData = FilterFunctions[target.id](data);
-  renderThumbnails(filteredData);
+  const filteredData = filterFunctions[target.id](data);
+  renderThumbnails(filteredData, true);
 };
 
 export { showImagesFilter, setFilterClick, rerenderThumbmnails };

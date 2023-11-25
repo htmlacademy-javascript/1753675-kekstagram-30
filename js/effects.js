@@ -74,7 +74,7 @@ const resetEffect = () => {
   effectSliderContainer.classList.add('hidden');
 };
 
-const onEffectClick = (event) => {
+const effectSelectionHandler = (event) => {
   if (event.target.value === 'none') {
     resetEffect();
     return;
@@ -102,7 +102,7 @@ const onEffectClick = (event) => {
 
 const initializeEffectSlider = () => {
   effectSliderContainer.classList.add('hidden');
-  effectsList.addEventListener('change', onEffectClick);
+  effectsList.addEventListener('change', effectSelectionHandler);
 
   if (!activeSlider) {
     activeSlider = noUiSlider.create(effectSliderElement, initialSliderOptions);
