@@ -16,14 +16,14 @@ const updateScaleStyle = () => {
   uploadImagePreview.style.transform = `scale(${scaleValue / scaleOptions.maxScale})`;
 };
 
-const handleScaleDecrease = () => {
+const scaleDecreaseHandler = () => {
   if (scaleValue > scaleOptions.minScale) {
     scaleValue -= scaleOptions.step;
     updateScaleStyle();
   }
 };
 
-const handleScaleIncrease = () => {
+const scaleIncreaseHandler = () => {
   if (scaleValue < scaleOptions.maxScale) {
     scaleValue += scaleOptions.step;
     updateScaleStyle();
@@ -37,4 +37,4 @@ const resetScale = () => {
   }
 };
 
-export { handleScaleDecrease, handleScaleIncrease, resetScale };
+export { scaleDecreaseHandler, scaleIncreaseHandler, resetScale };
