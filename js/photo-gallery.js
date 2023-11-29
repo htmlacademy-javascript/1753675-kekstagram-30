@@ -6,7 +6,7 @@ const thumbnailTemplate = document.querySelector('#picture').content.querySelect
 const renderThumbnails = (array, isSkipThumbnailContainerSetup) => {
   const thumbnailFragment = document.createDocumentFragment();
 
-  array.forEach(({ url, description, likes, comments }, index) => {
+  array.forEach(({ url, description, likes, comments, id }) => {
     const thumbnailElement = thumbnailTemplate.cloneNode(true);
     const thumbnailPicture = thumbnailElement.querySelector('.picture__img');
     const thumbnailLikes = thumbnailElement.querySelector('.picture__likes');
@@ -15,7 +15,7 @@ const renderThumbnails = (array, isSkipThumbnailContainerSetup) => {
     thumbnailPicture.alt = description;
     thumbnailLikes.textContent = likes;
     thumbnailComments.textContent = comments.length;
-    thumbnailElement.setAttribute('data-index', index);
+    thumbnailElement.setAttribute('data-index', id);
     thumbnailFragment.append(thumbnailElement);
   });
 

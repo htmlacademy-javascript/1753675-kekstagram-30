@@ -1,7 +1,7 @@
 import { isEscapeKey, showUploadSuccessMessage, showUploadFailureMessage, showDataErrorMessage } from './utils.js';
 import { configureUploadForm, isValidForm, resetValidate } from './validation.js';
 import { initializeEffectSlider, resetEffect } from './effects.js';
-import { handleScaleDecrease as scaleDecreaseHandler, handleScaleIncrease as scaleIncreaseHandler, resetScale } from './image-scale.js';
+import { scaleDecreaseHandler, scaleIncreaseHandler, resetScale } from './image-scale.js';
 import { sendData } from './api.js';
 
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
@@ -23,6 +23,22 @@ const toggleSubmitButton = (isDisabled) => {
 
 const isErrorMessageExists = () => Boolean(document.querySelector('.error'));
 
+const openImageEditor = () => {
+  overlayElement.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.addEventListener('keydown', keyDownHandler);
+};
+
+const closeImageEditor = () => {
+  imageUploadForm.reset();
+  resetScale();
+  resetEffect();
+  resetValidate();
+  overlayElement.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  document.removeEventListener('keydown', keyDownHandler);
+};
+
 const imageInputUploadHandler = () => {
   const file = imageInput.files[0];
   const fileExtension = file.name.split('.').pop().toLowerCase();
@@ -34,21 +50,10 @@ const imageInputUploadHandler = () => {
       preview.style.backgroundImage = `url('${uploadImagePreview.src}')`;
     });
 
-    overlayElement.classList.remove('hidden');
-    document.body.classList.add('modal-open');
+    openImageEditor();
   } else {
     showDataErrorMessage('Выбран некорректный формат файла. Выберите файл в формате JPG, JPEG или PNG.');
   }
-};
-
-const closeImageEditor = () => {
-  imageUploadForm.reset();
-  resetScale();
-  resetEffect();
-  resetValidate();
-  overlayElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  document.removeEventListener('click', keyDownHandler);
 };
 
 const cancelButtonClickHandler = () => {
@@ -82,7 +87,6 @@ const changeImageScale = () => {
 const setupImageUploadForm = () => {
   imageInput.addEventListener('change', imageInputUploadHandler);
   cancelButton.addEventListener('click', cancelButtonClickHandler);
-  document.addEventListener('keydown', keyDownHandler);
   configureUploadForm(imageUploadForm, hashtagsInput, commentInput);
   imageUploadForm.addEventListener('submit', imageFormSubmitHandler);
   changeImageScale();
